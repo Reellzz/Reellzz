@@ -19,6 +19,48 @@ BeachPart.Size = Vector3.new(500, 0, 500)
 BeachPart.Anchored = true
 BeachPart.CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
 
+function BathFinder(Name)
+	local FurnitureDB = require(game:GetService("ReplicatedStorage").ClientDB.Housing.FurnitureDB)
+	for i,v in pairs(FurnitureDB) do
+		if v.can_use_in_house and v.model_name:match("Shower") or v.model_name:match("Bath") then
+			for a,b in pairs(workspace.HouseInteriors.furniture:GetChildren()) do
+				if b:FindFirstChildWhichIsA("Model") and b:FindFirstChildWhichIsA("Model").Name == v.model_name then
+					Name = string.split(b.Name, "true/")[2]
+					return Name
+				end
+			end
+		end
+	end
+end
+
+function ToiletFinder(Name)
+	local FurnitureDB = require(game:GetService("ReplicatedStorage").ClientDB.Housing.FurnitureDB)
+	for i,v in pairs(FurnitureDB) do
+		if v.can_use_in_house and v.model_name:match("Toilet") or v.model_name:match("Toilet") then
+			for a,b in pairs(workspace.HouseInteriors.furniture:GetChildren()) do
+				if b:FindFirstChildWhichIsA("Model") and b:FindFirstChildWhichIsA("Model").Name == v.model_name then
+					Name = string.split(b.Name, "true/")[2]
+					return Name
+				end
+			end
+		end
+	end
+end
+
+function BedFinder(Name)
+	local FurnitureDB = require(game:GetService("ReplicatedStorage").ClientDB.Housing.FurnitureDB)
+	for i,v in pairs(FurnitureDB) do
+		if v.can_use_in_house and v.model_name:match("BasicCrib") or v.model_name:match("BasicCrib") then
+			for a,b in pairs(workspace.HouseInteriors.furniture:GetChildren()) do
+				if b:FindFirstChildWhichIsA("Model") and b:FindFirstChildWhichIsA("Model").Name == v.model_name then
+					Name = string.split(b.Name, "true/")[2]
+					return Name
+				end
+			end
+		end
+	end
+end
+
 if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique] then
 	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]) do
 
@@ -219,35 +261,63 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["school"]: end task')
 			end
 		end
-		if i == "dirtyy" then
+		if i == "dirty" then
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["dirty"]: start task')
 
-				pcall(function()
-					while wait() do
-						repeat wait()
-						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["dirty"])
-						return
-					end
-				end)
+				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
+
+				get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+				get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+				get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+
+				wait(3)
+
+				if BathFinder() then
+					local args = {
+						[1] = LocalPlayer,
+						[2] = BathFinder(),
+						[3] = "UseBlock",
+						[4] = {
+							["cframe"] = LocalPlayer.Character.Head.CFrame
+						},
+						[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+					}
+
+					get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+				end
 
 				TaskFarming = false
 				print('["debug"]["dirty"]: end task')
 			end
 		end
-		if i == "sleepyy" then
+		if i == "sleepy" then
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["sleepy"]: start task')
 
-				pcall(function()
-					while wait() do
-						repeat wait()
-						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["sleepy"])
-						return
-					end
-				end)
+				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
+
+				get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+				get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+				get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+
+				wait(3)
+
+				if BedFinder() then
+					local args = {
+						[1] = LocalPlayer,
+						[2] = BedFinder(),
+						[3] = "UseBlock",
+						[4] = {
+							["cframe"] = LocalPlayer.Character.Head.CFrame
+						},
+						[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+					}
+
+					get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+				end
 
 				TaskFarming = false
 				print('["debug"]["sleepy"]: end task')
@@ -318,10 +388,10 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["ride"]: start task')
 
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.strollers) do
-					if v.id == "stroller-deffault" then
+					if v.id == "stroller-default" then
 						get("ToolAPI/Equip"):InvokeServer(v.unique)
 						wait(2)
-						get("AdoptAPI/UseStroller"):InvokeServer(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"],LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
+						get("AdoptAPI/UseStroller"):InvokeServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
 					end
 				end
 				
@@ -335,6 +405,37 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 
 				TaskFarming = false
 				print('["debug"]["ride"]: end task')
+			end
+		end
+		if i == "toilet" then
+			if not TaskFarming then
+				TaskFarming = true
+				print('["debug"]["toilet"]: start task')
+
+				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
+
+				get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+				get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+				get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+
+				wait(3)
+
+				if ToiletFinder() then
+					local args = {
+						[1] = LocalPlayer,
+						[2] = ToiletFinder(),
+						[3] = "UseBlock",
+						[4] = {
+							["cframe"] = LocalPlayer.Character.Head.CFrame
+						},
+						[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+					}
+
+					get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+				end
+
+				TaskFarming = false
+				print('["debug"]["toilet"]: end task')
 			end
 		end
 	end
