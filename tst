@@ -342,6 +342,25 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["pet_me"]: end task')
 			end
 		end
+		if i == "moon" then
+			if not TaskFarming then
+				TaskFarming = true
+				print('["debug"]["moon"]: start task')
+
+				get("LocationAPI/SetLocation"):FireServer("MoonInterior")
+				
+				pcall(function()
+					while wait() do
+						repeat wait() game.Players.LocalPlayer.Character.Humanoid.Jump = true
+						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["moon"])
+						return
+					end
+				end)
+
+				TaskFarming = false
+				print('["debug"]["moon"]: end task')
+			end
+		end
 		if i == "walk" then
 			if not TaskFarming then
 				TaskFarming = true
