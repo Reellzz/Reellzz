@@ -185,7 +185,7 @@ while _G.Start == true do
 				if not TaskFarming then
 					TaskFarming = true
 					print('["debug"]["beach_party"]: start task')
-					LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
+					LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, 5, 0)
 
 					get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
 
