@@ -408,7 +408,8 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.strollers) do
 					if v.id == "stroller-default" then
-						get("ToolAPI/Equip"):InvokeServer(v.unique)
+						Stroller = v.unique
+						get("ToolAPI/Equip"):InvokeServer(Stroller)
 						wait(2)
 						get("AdoptAPI/UseStroller"):InvokeServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
 					end
@@ -421,6 +422,8 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 						return
 					end
 				end)
+				
+				get("ToolAPI/Unequip"):InvokeServer(Stroller)
 
 				TaskFarming = false
 				print('["debug"]["ride"]: end task')
