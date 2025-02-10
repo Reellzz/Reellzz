@@ -240,7 +240,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["salon"]: end task')
 			end
 		end
-		if i == "mysteryy" then
+		if i == "mystery" then
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["mystery"]: start task')
