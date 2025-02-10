@@ -246,18 +246,9 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["mystery"]: start task')
 
 				for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
-					if b["preference_status"]["rolled"] == true then
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, b)
-						wait(2)
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, b)
-						wait(2)
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, b)
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, b)
-						wait(2)
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, b)
-						wait(2)
-						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, b)
-					end
+					pcall(function()
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, a)
+					end)
 				end
 
 				TaskFarming = false
@@ -413,10 +404,12 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 						get("ToolAPI/Equip"):InvokeServer(v.unique)
 						wait(2)
 						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
-						wait(2)
+						wait(4)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
+						wait(4)
 						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
 						wait(2)
-						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
+						get("ToolAPI/Unequip"):InvokeServer(v.unique)
 					end
 				end
 				
