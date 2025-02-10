@@ -73,6 +73,14 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				wait(0.5)
 				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
+				pcall(function()
+					while wait() do
+						repeat wait()
+						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["thirsty"])
+						return
+					end
+				end)
+				
 				TaskFarming = false
 				print('["debug"]["thirsty"]: end task')
 			end
@@ -86,6 +94,14 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				wait(0.5)
 				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
+				pcall(function()
+					while wait() do
+						repeat wait()
+						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["hungry"])
+						return
+					end
+				end)
+				
 				TaskFarming = false
 				print('["debug"]["hungry"]: end task')
 			end
@@ -126,7 +142,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["bored"]: start task')
 				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, 5, 0)
 
-				get("LocationAPI/SetLocation"):FireServer("MainMap")
+				get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
 
 				pcall(function()
 					while wait() do
@@ -147,7 +163,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["camping"]: start task')
 				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
 
-				get("LocationAPI/SetLocation"):FireServer("MainMap!Default")
+				get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
 
 				pcall(function()
 					while wait() do
@@ -168,7 +184,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["beach_party"]: start task')
 				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
 
-				get("LocationAPI/SetLocation"):FireServer("MainMap!Default")
+				get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
 
 				pcall(function()
 					while wait() do
@@ -224,7 +240,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["salon"]: end task')
 			end
 		end
-		if i == "mystery" then
+		if i == "mysteryy" then
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["mystery"]: start task')
@@ -450,7 +466,6 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				wait(3)
 
 				if ToiletFinder() then
-					print(ToiletFinder())
 					local args = {
 						[1] = LocalPlayer,
 						[2] = ToiletFinder(),
