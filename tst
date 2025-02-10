@@ -70,7 +70,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["thirsty"]: start task')
 
 				get("ShopAPI/BuyItem"):InvokeServer("food", "water", {["buy_count"] = 1})
-				wait()
+				wait(0.5)
 				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
 				TaskFarming = false
@@ -83,7 +83,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["hungry"]: start task')
 
 				get("ShopAPI/BuyItem"):InvokeServer("food", "apple", {["buy_count"] = 1})
-				wait()
+				wait(0.5)
 				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
 				TaskFarming = false
@@ -444,7 +444,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 					local args = {
 						[1] = LocalPlayer,
 						[2] = ToiletFinder(),
-						[3] = "UseBlock",
+						[3] = "Seat1",
 						[4] = {
 							["cframe"] = LocalPlayer.Character.Head.CFrame
 						},
