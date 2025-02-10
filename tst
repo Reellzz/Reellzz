@@ -147,7 +147,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["camping"]: start task')
 				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
 
-				get("LocationAPI/SetLocation"):FireServer("MainMap")
+				get("LocationAPI/SetLocation"):FireServer("MainMap!Default")
 
 				pcall(function()
 					while wait() do
@@ -168,7 +168,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["beach_party"]: start task')
 				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
 
-				get("LocationAPI/SetLocation"):FireServer("MainMap")
+				get("LocationAPI/SetLocation"):FireServer("MainMap!Default")
 
 				pcall(function()
 					while wait() do
