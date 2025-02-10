@@ -166,6 +166,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["salon"]: start task')
+				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 				
 				get("LocationAPI/SetLocation"):FireServer("Salon")
 
@@ -202,6 +203,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["school"]: start task')
+				LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 				
 				get("LocationAPI/SetLocation"):FireServer("School")
 
@@ -297,15 +299,15 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				for i,v in pairs(ClientData.get_data()[game.Players.LocalPlayer.Name].inventory.toys) do
 					if v.id == "squeaky_bone_default" then
 						get("ToolAPI/Equip"):InvokeServer(v.unique)
+						wait(2)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
+						wait(2)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
+						wait(2)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
 					end
 				end
-
-				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique})
-				wait(3)
-				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique})
-				wait(3)
-				get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique})
-
+				
 				TaskFarming = false
 				print('["debug"]["play"]: end task')
 			end
