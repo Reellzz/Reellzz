@@ -351,7 +351,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				
 				pcall(function()
 					while wait() do
-						repeat wait() game.Players.LocalPlayer.Character.Humanoid.Jump = true
+						repeat wait()
 						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["moon"])
 						return
 					end
@@ -440,6 +440,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				wait(3)
 
 				if ToiletFinder() then
+					print(ToiletFinder())
 					local args = {
 						[1] = LocalPlayer,
 						[2] = ToiletFinder(),
