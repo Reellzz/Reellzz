@@ -27,7 +27,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["hungry"]: start task')
+			print('["debug"]["hungry"]: end task')
 		end
 		if i == "sick" then
 			print('["debug"]["sick"]: start task')
@@ -39,7 +39,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["sick"]: start task')
+			print('["debug"]["sick"]: end task')
 		end
 		if i == "bored" then
 			print('["debug"]["bored"]: start task')
@@ -51,7 +51,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["bored"]: start task')
+			print('["debug"]["bored"]: end task')
 		end
 		if i == "camping" then
 			print('["debug"]["camping"]: start task')
@@ -63,7 +63,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["camping"]: start task')
+			print('["debug"]["camping"]: end task')
 		end
 		if i == "beach_party" then
 			print('["debug"]["beach_party"]: start task')
@@ -75,7 +75,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["beach_party"]: start task')
+			print('["debug"]["beach_party"]: end task')
 		end
 		if i == "pizza_party" then
 			print('["debug"]["pizza_party"]: start task')
@@ -87,7 +87,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["pizza_party"]: start task')
+			print('["debug"]["pizza_party"]: end task')
 		end
 		if i == "salon" then
 			print('["debug"]["salon"]: start task')
@@ -99,7 +99,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["salon"]: start task')
+			print('["debug"]["salon"]: end task')
 		end
 		if i == "mystery" then
 			print('["debug"]["mystery"]: start task')
@@ -111,7 +111,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["mystery"]: start task')
+			print('["debug"]["mystery"]: end task')
 		end
 		if i == "school" then
 			print('["debug"]["school"]: start task')
@@ -123,7 +123,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["school"]: start task')
+			print('["debug"]["school"]: end task')
 		end
 		if i == "dirty" then
 			print('["debug"]["dirty"]: start task')
@@ -135,7 +135,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["dirty"]: start task')
+			print('["debug"]["dirty"]: end task')
 		end
 		if i == "sleepy" then
 			print('["debug"]["sleepy"]: start task')
@@ -147,7 +147,7 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				end
 			end)
 			
-			print('["debug"]["sleepy"]: start task')
+			print('["debug"]["sleepy"]: end task')
 		end
 	end
 end
