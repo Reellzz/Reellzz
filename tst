@@ -249,8 +249,13 @@ while _G.Start == true do
 					print('["debug"]["mystery"]: start task')
 
 					for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
+						wait(0.75)
 						pcall(function()
 							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, a)
+							wait(0.5)
+							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, a)
+							wait(0.5)
+							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, a)
 						end)
 					end
 
