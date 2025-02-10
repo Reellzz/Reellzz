@@ -342,8 +342,12 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				TaskFarming = true
 				print('["debug"]["pet_me"]: start task')
 				
-				get("AilmentsAPI/ProgressPetMeAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique)
+				get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = true})
 
+				get("AilmentsAPI/ProgressPetMeAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"])
+				
+				get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = false})
+				
 				pcall(function()
 					while wait() do
 						repeat wait()
