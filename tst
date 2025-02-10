@@ -312,6 +312,31 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["play"]: end task')
 			end
 		end
+		if i == "ride" then
+			if not TaskFarming then
+				TaskFarming = true
+				print('["debug"]["ride"]: start task')
+
+				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.strollers) do
+					if v.id == "stroller-deffault" then
+						get("ToolAPI/Equip"):InvokeServer(v.unique)
+						wait(2)
+						get("AdoptAPI/UseStroller"):InvokeServer(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"],LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
+					end
+				end
+				
+				pcall(function()
+					while wait() do
+						repeat wait() game.Players.LocalPlayer.Character.Humanoid.Jump = true
+						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["ride"])
+						return
+					end
+				end)
+
+				TaskFarming = false
+				print('["debug"]["ride"]: end task')
+			end
+		end
 	end
 end
 
