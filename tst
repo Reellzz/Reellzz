@@ -224,18 +224,25 @@ if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.
 				print('["debug"]["salon"]: end task')
 			end
 		end
-		if i == "mysteryy" then
+		if i == "mystery" then
 			if not TaskFarming then
 				TaskFarming = true
 				print('["debug"]["mystery"]: start task')
 
-				pcall(function()
-					while wait() do
-						repeat wait()
-						until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["mystery"])
-						return
+				for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
+					if b["preference_status"]["rolled"] == true then
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, b)
+						wait(2)
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, b)
+						wait(2)
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, b)
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, b)
+						wait(2)
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, b)
+						wait(2)
+						get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, b)
 					end
-				end)
+				end
 
 				TaskFarming = false
 				print('["debug"]["mystery"]: end task')
