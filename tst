@@ -249,13 +249,11 @@ while _G.Start == true do
 					print('["debug"]["mystery"]: start task')
 
 					for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
-						wait(0.75)
+						wait(0.65)
 						pcall(function()
 							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 1, a)
 							wait(0.5)
 							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 2, a)
-							wait(0.5)
-							get("AilmentsAPI/ChooseMysteryAilment"):FireServer("mystery", 3, a)
 						end)
 					end
 
@@ -350,12 +348,14 @@ while _G.Start == true do
 					TaskFarming = true
 					print('["debug"]["pet_me"]: start task')
 
-					get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = true})
-
-					get("AilmentsAPI/ProgressPetMeAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"])
-
-					get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = false})
-
+					for i=1, 10 do
+						get("AdoptAPI/FocusPet"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
+						get("AvatarAPI/SetPlayerOnPlayerCollision"):FireServer(false)
+						get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = true})
+						get("PetAPI/ReplicateActivePerformances"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{["FocusPet"] = true})
+						get("AilmentsAPI/ProgressPetMeAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"])
+					end
+					
 					pcall(function()
 						while wait() do
 							repeat wait()
