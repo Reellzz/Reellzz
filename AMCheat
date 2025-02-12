@@ -132,6 +132,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["sick"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("Hospital")
@@ -162,6 +164,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["bored"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
@@ -183,6 +187,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["camping"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
@@ -204,6 +210,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["beach_party"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
@@ -225,6 +233,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["pizza_party"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("PizzaShop")
@@ -246,6 +256,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["salon"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("Salon")
@@ -284,6 +296,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["school"]: start task')
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("LocationAPI/SetLocation"):FireServer("School")
@@ -304,7 +318,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["dirty"]: start task')
-
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
@@ -335,7 +350,8 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["sleepy"]: start task')
-
+						
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
@@ -388,6 +404,9 @@ while wait(1) do
 						TaskFarming = true
 						print('["debug"]["moon"]: start task')
 
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
+						
 						get("LocationAPI/SetLocation"):FireServer("MoonInterior")
 
 						pcall(function()
@@ -477,6 +496,7 @@ while wait(1) do
 						TaskFarming = true
 						print('["debug"]["toilet"]: start task')
 
+						get("AdoptAPI/HoldBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
 						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
@@ -507,5 +527,3 @@ while wait(1) do
 		end
 	end)
 end
-
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/Eggfarm?token=GHSAT0AAAAAAC54JAZQWUMC54DPRCGMAGRGZ5MU7AA"))()
