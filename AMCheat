@@ -19,9 +19,10 @@ end
 
 if LocalPlayer.PlayerGui.NewsApp.Enabled then
 	ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
-	wait(5)
-	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 end
+
+wait(5)
+get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 
 if not License.player_has_trade_license() then
 	get("TradeAPI/BeginQuiz"):FireServer()
