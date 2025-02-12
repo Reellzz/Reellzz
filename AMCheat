@@ -1,7 +1,38 @@
 local LocalPlayer = game.Players.LocalPlayer
 local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
+local Tutorial = require(game:GetService("ReplicatedStorage").ClientModules.Game.Tutorial.LegacyTutorial)
+local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
+
+function ButtonClick(Path)
+	firesignal(Path["MouseButton1Down"])
+	firesignal(Path["MouseButton1Click"])
+end
+
+if Tutorial.is_tutorial_completed() == false then
+	get("SettingsAPI/SetSetting"):FireServer("theme_color","black")
+	get("LegacyTutorialAPI/MarkTutorialCompleted"):FireServer()
+	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
+	get("MinigameAPI/GetOfflineInviteLobbyDetails"):InvokeServer()
+end
+
+if LocalPlayer.PlayerGui.NewsApp.Enabled then
+	repeat wait(0.5) ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
+	until not LocalPlayer.PlayerGui.NewsApp.Enabled
+	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
+end
+
+if License.player_has_trade_license() == false then
+	get("TradeAPI/BeginQuiz"):FireServer()
+	for i,v in pairs(getgc(true)) do
+		if type(v) == "table" and rawget(v,"question_index") then
+			for i,v in pairs(v.quiz) do
+				get("TradeAPI/AnswerQuizQuestion"):FireServer(v.answer)
+			end 
+		end 
+	end 
+end
 
 local AMCheatPart = Instance.new("Part", workspace)
 local ParkPart = Instance.new("Part", workspace)
