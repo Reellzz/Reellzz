@@ -6,8 +6,12 @@ local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
 function ButtonClick(Path)
-	firesignal(Path["MouseButton1Down"])
-	firesignal(Path["MouseButton1Click"])
+	for i,v in pairs(getconnections(Path.MouseButton1Down)) do
+		v:Fire()
+	end
+	for i,v in pairs(getconnections(Path.MouseButton1Click)) do
+		v:Fire()
+	end
 end
 
 if not Tutorial.is_tutorial_completed() then
@@ -22,7 +26,7 @@ if LocalPlayer.PlayerGui.NewsApp.Enabled then
 	ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
 end
 
-wait(10)
+wait(5)
 
 if not License.player_has_trade_license() then
 	get("TradeAPI/BeginQuiz"):FireServer()
