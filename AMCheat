@@ -18,14 +18,12 @@ if not Tutorial.is_tutorial_completed() then
 end
 
 if LocalPlayer.PlayerGui.NewsApp.Enabled then
-	repeat wait(0.5) ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
-	until not LocalPlayer.PlayerGui.NewsApp.Enabled
+	ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
+	wait(5)
+	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 end
 
-wait(5)
-get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
-
-if License.player_has_trade_license() == false then
+if not License.player_has_trade_license() then
 	get("TradeAPI/BeginQuiz"):FireServer()
 	for i,v in pairs(getgc(true)) do
 		if type(v) == "table" and rawget(v,"question_index") then
