@@ -20,6 +20,7 @@ end
 if LocalPlayer.PlayerGui.NewsApp.Enabled then
 	repeat wait(0.5) ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
 	until not LocalPlayer.PlayerGui.NewsApp.Enabled
+	wait(5)
 	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 end
 
