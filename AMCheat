@@ -10,7 +10,7 @@ function ButtonClick(Path)
 	firesignal(Path["MouseButton1Click"])
 end
 
-if Tutorial.is_tutorial_completed() == false then
+if not Tutorial.is_tutorial_completed() then
 	get("SettingsAPI/SetSetting"):FireServer("theme_color","black")
 	get("LegacyTutorialAPI/MarkTutorialCompleted"):FireServer()
 	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
@@ -20,9 +20,10 @@ end
 if LocalPlayer.PlayerGui.NewsApp.Enabled then
 	repeat wait(0.5) ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
 	until not LocalPlayer.PlayerGui.NewsApp.Enabled
-	wait(5)
-	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 end
+
+wait(5)
+get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 
 if License.player_has_trade_license() == false then
 	get("TradeAPI/BeginQuiz"):FireServer()
