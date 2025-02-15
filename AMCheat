@@ -97,7 +97,7 @@ while wait(1) do
 	else
 		return
 	end
-	pcall(function()
+	spawn(function()
 		if getgenv().AMCheat.Eggfarm then
 			pcall(function()
 				if not Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["is_egg"] then
@@ -123,7 +123,7 @@ while wait(1) do
 						print('["debug"]["thirsty"]: start task')
 
 						get("ShopAPI/BuyItem"):InvokeServer("food", "water", {["buy_count"] = 1})
-						wait(1)
+						wait(2.5)
 						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
 						pcall(function()
@@ -144,7 +144,7 @@ while wait(1) do
 						print('["debug"]["hungry"]: start task')
 
 						get("ShopAPI/BuyItem"):InvokeServer("food", "apple", {["buy_count"] = 1})
-						wait(1)
+						wait(2.5)
 						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
 						pcall(function()
@@ -568,3 +568,11 @@ while wait(5) do
 	else
 	end
 end
+
+spawn(function()
+	LocalPlayer.Idled:Connect(function()
+		local VirtualUser = game:GetService("VirtualUser")
+		VirtualUser:CaptureController()
+		VirtualUser:ClickButton2(Vector2.new())
+	end)
+end)
