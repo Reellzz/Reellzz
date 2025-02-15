@@ -478,6 +478,10 @@ spawn(function()
 						if not TaskFarming then
 							TaskFarming = true
 							print('["debug"]["play"]: start task')
+							
+							get("ToolAPI/Unequip"):InvokeServer(ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique)
+							wait(1)
+							get("ToolAPI/Equip"):InvokeServer(ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique)
 
 							for i,v in pairs(ClientData.get_data()[game.Players.LocalPlayer.Name].inventory.toys) do
 								if v.id == "squeaky_bone_default" then
