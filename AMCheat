@@ -6,12 +6,8 @@ local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
 function ButtonClick(Path)
-	for i,v in pairs(getconnections(Path.MouseButton1Down)) do
-		v:Fire()
-	end
-	for i,v in pairs(getconnections(Path.MouseButton1Click)) do
-		v:Fire()
-	end
+	getconnections(Path["MouseButton1Down"])
+	getconnections(Path["MouseButton1Click"])
 end
 
 if not Tutorial.is_tutorial_completed() then
@@ -24,9 +20,8 @@ end
 if LocalPlayer.PlayerGui.NewsApp.Enabled then
 	get("DailyLoginAPI/ClaimDailyReward"):InvokeServer()
 	ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Contents.PlayButton)
+	wait(5)
 end
-
-wait(5)
 
 if not License.player_has_trade_license() then
 	get("TradeAPI/BeginQuiz"):FireServer()
@@ -562,4 +557,14 @@ while wait(1) do
 			end
 		end
 	end)
+end
+
+while wait(5) do
+	if getgenv().AMCheat.Eventfarm then
+		for i=1, 8 do
+		get("ValentinesEventAPI/PickupRose"):FireServer(i)
+		get("ValentinesEventAPI/PickupRoseHearts"):FireServer(i,{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20})
+		end
+	else
+	end
 end
