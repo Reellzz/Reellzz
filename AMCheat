@@ -435,24 +435,22 @@ spawn(function()
 
 								RespawnPet()
 								
-								for i,v in pairs(ClientData.get_data()[game.Players.LocalPlayer.Name].inventory.toys) do
-									if v.id == "squeaky_bone_default" then
-										get("ToolAPI/Equip"):InvokeServer(v.unique)
-										get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
-										get("PetObjectAPI/GrabPetObject"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]), workspace.PetObjects:FindFirstChild("SqueakyBone"))
-										get("PetAPI/ReplicateActiveReactions"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{})
-										wait(3)
-										get("ToolAPI/Equip"):InvokeServer(v.unique)
-										get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
-										get("PetObjectAPI/GrabPetObject"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]), workspace.PetObjects:FindFirstChild("SqueakyBone"))
-										get("PetAPI/ReplicateActiveReactions"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{})
-										wait(3)
-										get("ToolAPI/Equip"):InvokeServer(v.unique)
-										get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
-										get("PetObjectAPI/GrabPetObject"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]), workspace.PetObjects:FindFirstChild("SqueakyBone"))
-										get("PetAPI/ReplicateActiveReactions"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{})
+								pcall(function()
+									while wait() do
+										repeat wait() 
+											for i,v in pairs(ClientData.get_data()[game.Players.LocalPlayer.Name].inventory.toys) do
+												if v.id == "squeaky_bone_default" then
+													get("ToolAPI/Equip"):InvokeServer(v.unique)
+													get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_1",{["reaction_name"] = "ThrowToyReaction",["unique_id"] = v.unique})
+													get("PetObjectAPI/GrabPetObject"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]), workspace.PetObjects:FindFirstChild("SqueakyBone"))
+													get("PetAPI/ReplicateActiveReactions"):FireServer(workspace.Pets:WaitForChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),{})
+												end
+											end
+											wait(2.5)
+										until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["play"])
+										return
 									end
-								end
+								end)
 
 								TaskFarming = false
 								print('["debug"]["play"]: end task')
