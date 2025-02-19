@@ -330,6 +330,7 @@ spawn(function()
 
 								LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
+								get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
 								get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 
 								local args = {
@@ -347,6 +348,7 @@ spawn(function()
 								TaskFarming = false
 								print('["debug"]["dirty"]: end task')
 							end
+							wait(1)
 						end
 						if i == "sleepy" then
 							if not TaskFarming then
@@ -355,6 +357,7 @@ spawn(function()
 
 								LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
+								get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
 								get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 
 								local args = {
@@ -491,6 +494,7 @@ spawn(function()
 
 								LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = AMCheatPart.CFrame + Vector3.new(0, 5, 0)
 
+								get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
 								get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 								
 								local args = {
@@ -508,6 +512,7 @@ spawn(function()
 								TaskFarming = false
 								print('["debug"]["toilet"]: end task')
 							end
+							wait(1)
 						end
 					end
 				end
