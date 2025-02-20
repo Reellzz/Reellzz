@@ -349,7 +349,6 @@ spawn(function()
 								TaskFarming = false
 								print('["debug"]["dirty"]: end task')
 							end
-							wait(1)
 						end
 						if i == "sleepy" then
 							if not TaskFarming then
