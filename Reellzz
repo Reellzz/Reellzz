@@ -1,7 +1,3 @@
-if not workspace:FindFirstChild("H8ETG78JYE98GTFR4HT8EG") then
-	return
-end
-
 local JulHub = {}
 local Utility = {}
 
@@ -417,14 +413,14 @@ function JulHub:NewNotify(Text, Time)
 	end)
 end
 
-function JulHub:WaitingFrame(Msg, ggg)
+function JulHub:WaitingFrame(Msg)
 	local Frame = Instance.new("TextButton")
 	local Corner = Instance.new("UICorner")
 	local Message = Instance.new("TextLabel")
 	local Tips = Instance.new("TextLabel")
 
 	Frame.Name = "WaitingFrame"
-	Frame.Parent = ggg
+	Frame.Parent = game.CoreGui.JulHub.MainFrameShadow.MainFrame
 	Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	Frame.BorderColor3 = Color3.fromRGB(30, 30, 30)
 	Frame.BorderSizePixel = 0
