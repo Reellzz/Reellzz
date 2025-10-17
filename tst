@@ -14,6 +14,7 @@ local License = require(game:GetService("ReplicatedStorage").SharedModules.Trade
 
 local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2025.Minigames.HauntletMinigameClient)
 local FFM = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2025.Minigames.FashionFrenzyMinigameClient)
+local TDC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2025.Minigames.TreatDashClient)
 
 MainPart.Size = Vector3.new(500, 0, 500)
 MainPart.Anchored = true
@@ -27,7 +28,7 @@ BeachPart.Size = Vector3.new(500, 0, 500)
 BeachPart.Anchored = true
 BeachPart.CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
 
-function SendWebhook(webhookUrl, v)
+function SendWebhook(webhookUrl,Title, v)
 	(http_request){
 		Url = webhookUrl,
 		Method = "POST",
@@ -37,7 +38,7 @@ function SendWebhook(webhookUrl, v)
 		Body = game:GetService("HttpService"):JSONEncode({
 			content = "",
 			embeds = {{
-				title = "**Log**",
+				title = "**"..Title.."**",
 				color = tonumber(0xffffff),
 				fields = {{name = "",value = v}}
 			}}
@@ -124,17 +125,38 @@ end)
 spawn(function()
 	while wait(1) do
 		if not HMC.is_participating and not FFM.is_participating and CurrentLocation() == "MainMap!Fall" or CurrentLocation() == "MainMap" then
-			local function getSecondsLeft(timestamp)
+			local function getSecondsLeft(ts)
 				local now = os.time(os.date("!*t", os.time() - 5 * 60 * 60))
-				return timestamp - now
+				return ts - now
 			end
 
-			local hauntletTime = getSecondsLeft(ClientData.get_data()[LocalPlayer.Name].minigame_timestamps.hauntlet)
-			local costumeTime = getSecondsLeft(ClientData.get_data()[LocalPlayer.Name].minigame_timestamps.costume_party)
+			local data = ClientData.get_data()[LocalPlayer.Name]
+			local times = {
+				hauntlet = getSecondsLeft(data.hauntlet_cycle_timestamp.timestamp),
+				costume_party = getSecondsLeft(data.costume_party_cycle_timestamp.timestamp),
+				sleep_or_treat = getSecondsLeft(data.sleep_or_treat_cycle_timestamp.timestamp)
+			}
 
-			local target = hauntletTime < costumeTime and "hauntlet" or "costume_party"
+			local target = "hauntlet"
+			if times.costume_party < times[target] then target = "costume_party" end
+			if times.sleep_or_treat < times[target] then target = "sleep_or_treat" end
+
 			LocalPlayer.character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations[target].CFrame
 		end
+	end
+end)
+
+spawn(function()
+	while wait(1) do
+		spawn(function()
+			if TDC.is_participating then
+				for i=1, 300 do
+					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "house_knock", i)
+					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
+					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
+				end
+			end
+		end)
 	end
 end)
 
@@ -306,8 +328,27 @@ spawn(function()
 		local ampm = hour < 12 and "" or ""
 		local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
 
-		SendWebhook(Webhook, "**User data**\nUser: "..LocalPlayer.Name.."\nBuck: "..ClientData.get_data()[LocalPlayer.Name]["money"].."\nCandy: "..ClientData.get_data()[LocalPlayer.Name]["candy_2025"].."\n\n**Halloween pet**\nWidow: "..Widow.."\nKitty bat: "..Kittybat.."\n\n**Server info**\nPlayers: "..PlayerCount.."\nTime: "..timestamp)
+		SendWebhook(Webhook,"Log", "**User data**\nUser: "..LocalPlayer.Name.."\nBuck: "..ClientData.get_data()[LocalPlayer.Name]["money"].."\nCandy: "..ClientData.get_data()[LocalPlayer.Name]["candy_2025"].."\nLocation: "..CurrentLocation().."\n\n**Halloween pet**\nWidow: "..Widow.."\nKitty bat: "..Kittybat.."\n\n**Server info**\nPlayers: "..PlayerCount.."\nTime: "..timestamp)
 
+	end
+end)
+
+spawn(function()
+	local aad = require(game:GetService("ReplicatedStorage").ClientModules.Game.MinigameClientManager)
+
+	for k, v in pairs(aad) do
+		if typeof(v) == "function" and k == "add" then
+			local original = v
+			aad[k] = function(...)
+				local date = os.date("!*t")
+				local hour = (date.hour + 2) % 24
+				local ampm = hour < 12 and "" or ""
+				local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
+
+				SendWebhook(Webhook,"Minigame Joined", "**User data**\nUser: "..LocalPlayer.Name.."\nTime: "..timestamp)
+				return original(...)
+			end
+		end
 	end
 end)
 
@@ -318,3 +359,5 @@ spawn(function()
 		VirtualUser:ClickButton2(Vector2.new())
 	end)
 end)
+
+--loadstring(game:HttpGet"https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/tst")()
