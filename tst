@@ -105,7 +105,6 @@ end
 wait(3)
 
 if not FFM.is_participating and not HMC.is_participating and CurrentLocation() ~= "MainMap" then
-	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 10, 0)
 	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
 	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
