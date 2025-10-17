@@ -110,7 +110,7 @@ if not FFM.is_participating and not HMC.is_participating and CurrentLocation() ~
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
 		break
 	end
-	SetLocation("MainMap", "MainDoor", {})
+	--SetLocation("MainMap", "MainDoor", {})
 	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 end
 
@@ -125,24 +125,12 @@ end)
 
 spawn(function()
 	while wait(1) do
-		if not HMC.is_participating and not FFM.is_participating and CurrentLocation() == "MainMap!Fall" or CurrentLocation() == "MainMap" then
-			local function getSecondsLeft(ts)
-				local now = os.time(os.date("!*t", os.time() - 5 * 60 * 60))
-				return ts - now
-			end
-
-			local data = ClientData.get_data()[LocalPlayer.Name]
-			local times = {
-				hauntlet = getSecondsLeft(data.hauntlet_cycle_timestamp.timestamp),
-				costume_party = getSecondsLeft(data.costume_party_cycle_timestamp.timestamp),
-				sleep_or_treat = getSecondsLeft(data.sleep_or_treat_cycle_timestamp.timestamp)
-			}
-
-			local target = "hauntlet"
-			if times.costume_party < times[target] then target = "costume_party" end
-			if times.sleep_or_treat < times[target] then target = "sleep_or_treat" end
-
-			LocalPlayer.character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations[target].CFrame
+		if workspace.StaticMap.hauntlet_minigame_state.players_loading.Value == true then
+			get("MinigameAPI/AttemptJoin"):FireServer("hauntlet", true)
+		elseif workspace.StaticMap.costume_party_minigame_state.players_loading.Value == true then
+			get("MinigameAPI/AttemptJoin"):FireServer("costume_party", true)
+		elseif workspace.StaticMap.sleep_or_treat_minigame_state.players_loading.Value == true then
+			get("MinigameAPI/AttemptJoin"):FireServer("sleep_or_treat", true)
 		end
 	end
 end)
@@ -155,6 +143,7 @@ spawn(function()
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", i)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
+					game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workspace.Terrain[""..TDC.instanced_minigame.minigame_destination_id].Visual.TreatDash_V1.CandyBasketMain.CandyZone.Ring.CFrame
 				end
 			end
 		end)
