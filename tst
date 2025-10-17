@@ -136,10 +136,11 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(1) do
+	while wait(3) do
 		spawn(function()
 			if TDC.is_participating then
-				for i=1, 300 do
+				for i=1, 150 do
+					wait()
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", i)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
@@ -336,6 +337,20 @@ spawn(function()
 				local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
 
 				SendWebhook(Webhook,"Minigame Joined", "**User data**\nUser: "..LocalPlayer.Name.."\nTime: "..timestamp)
+				return original(...)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	local aad = require(game:GetService("ReplicatedStorage").ClientModules.Game.MinigameClientManager)
+
+	for k, v in pairs(aad) do
+		if typeof(v) == "function" and k == "remove" then
+			local original = v
+			aad[k] = function(...)
+				get("TeamAPI/Spawn"):InvokeServer()
 				return original(...)
 			end
 		end
