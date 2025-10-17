@@ -85,6 +85,25 @@ end
 
 wait(1)
 
+local tileSize = 1800
+local tilesPerAxis = 20
+
+local platformHeight = -500
+
+for x = -tilesPerAxis, tilesPerAxis do
+	for z = -tilesPerAxis, tilesPerAxis do
+		local part = Instance.new("Part")
+		part.Size = Vector3.new(tileSize, 5, tileSize)
+		part.Anchored = true
+		part.CanCollide = true
+		part.Transparency = 0
+		part.Position = Vector3.new(x * tileSize, platformHeight, z * tileSize)
+		part.Name = "InfiniteFloorTile"
+		part.Parent = workspace
+	end
+end
+
+
 if not Tutorial.is_tutorial_completed() then
 	repeat
 		wait()
@@ -104,14 +123,15 @@ end
 
 wait(3)
 
-if not FFM.is_participating and not HMC.is_participating and CurrentLocation() ~= "MainMap" then
-	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
-	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+	if v.properties.age == 6 then
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
-		break
+	else
+		for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+			get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+			break
+		end
 	end
-	--SetLocation("MainMap", "MainDoor", {})
-	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 end
 
 spawn(function()
@@ -124,7 +144,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(1) do
+	while wait(1.5) do
 		if workspace.StaticMap.hauntlet_minigame_state.players_loading.Value == true then
 			get("MinigameAPI/AttemptJoin"):FireServer("hauntlet", true)
 		elseif workspace.StaticMap.costume_party_minigame_state.players_loading.Value == true then
