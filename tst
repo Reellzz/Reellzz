@@ -106,11 +106,13 @@ wait(3)
 
 if not FFM.is_participating and not HMC.is_participating and CurrentLocation() ~= "MainMap" then
 	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 10, 0)
+	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
 	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
 		break
 	end
 	SetLocation("MainMap", "MainDoor", {})
+	LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 end
 
 spawn(function()
@@ -151,9 +153,9 @@ spawn(function()
 		spawn(function()
 			if TDC.is_participating then
 				for i=1, 300 do
-					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "house_knock", i)
-					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
-					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", i)
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
 				end
 			end
 		end)
@@ -360,4 +362,6 @@ spawn(function()
 	end)
 end)
 
---loadstring(game:HttpGet"https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/tst")()
+--[[
+wait(5)
+loadstring(game:HttpGet"https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/tst")()]]
