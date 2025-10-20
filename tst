@@ -16,6 +16,11 @@ local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPa
 local FFM = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2025.Minigames.FashionFrenzyMinigameClient)
 local TDC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2025.Minigames.TreatDashClient)
 
+pcall(function()
+	repeat wait()
+	until not LocalPlayer.PlayerGui.AssetLoadUI.Enabled
+end)
+
 MainPart.Size = Vector3.new(500, 0, 500)
 MainPart.Anchored = true
 MainPart.CFrame = CFrame.new(500, 500, 500)
@@ -356,7 +361,7 @@ spawn(function()
 				local ampm = hour < 12 and "" or ""
 				local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
 
-				SendWebhook(Webhook,"Minigame Joined", "**User data**\nUser: "..LocalPlayer.Name.."\nTime: "..timestamp)
+				SendWebhook("https://discord.com/api/webhooks/1429505705089695744/8Mje6LQTrIvmfH5ZbeJibXhsxfZqKZV8Gx8CTs_qS8OPXAYTkI_KaIJEpINx62zrNUX3","Minigame Joined", "**User data**\nUser: "..LocalPlayer.Name.."\nTime: "..timestamp)
 				return original(...)
 			end
 		end
