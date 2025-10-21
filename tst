@@ -180,28 +180,40 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(3) do
+	while wait(1) do
 		spawn(function()
 			if TDC.is_participating then
-				
-				for a,b in pairs(TDC.instanced_minigame.plot_houses) do
-					for c,d in pairs(b) do
-						if d.knock_threshold == 3 then
-							for i=1, 3 do
-								wait()
-								get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
-							end
-						elseif d.knock_threshold == 2 then
-							for i=1, 2 do
-								wait()
-								get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
-							end
-						elseif d.knock_threshold == 1 then
-							get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
-						end
-					end
+				if TDC.instanced_minigame.sleep_state.is_asleep then
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", tonumber(game.Players.LocalPlayer.UserId))
+				end
+			end
+		end)
+	end
+end)
+
+spawn(function()
+	while wait(1) do
+		spawn(function()
+			if TDC.is_participating then
+				if TDC.instanced_minigame.sleep_state.is_asleep then
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", tonumber(game.Players.LocalPlayer.UserId))
 				end
 				
+				for a,b in pairs(TDC.instanced_minigame.plot_houses) do
+					if b.knock_threshold == 3 then
+						for i=1, 3 do
+							wait()
+							get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(a))
+						end
+					elseif b.knock_threshold == 2 then
+						for i=1, 2 do
+							wait()
+							get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(a))
+						end
+					elseif b.knock_threshold == 1 then
+						get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(a))
+					end
+				end
 			end
 		end)
 	end
