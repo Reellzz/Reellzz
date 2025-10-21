@@ -142,28 +142,30 @@ end
 
 spawn(function()
 	while wait(1) do
-		for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
-			if v:IsA("ScreenGui") then
-				v.Enabled = false
-			end
-		end
-		get("HalloweenEventAPI/ProgressTaming"):InvokeServer(true)
-		get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
-		get("PayAPI/Collect"):FireServer()
-		get("HousingAPI/ClaimAllDeliveries"):FireServer()
-		if not ClientData.get_data()[LocalPlayer.Name].popcorn_manager.lily_pad_states[1] then
-			for i=1, 6 do
-				wait()
-				get("HalloweenEventAPI/ClaimLilyPadCandy"):FireServer(i)
-			end
-		end
-		if CurrentLocation() == "MainMap" then
-			for i,v in pairs(workspace.Interiors["MainMap!Fall"]:GetChildren()) do
-				if v:IsA("Folder") then
-					v:Destroy()
+		spawn(function()
+			for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+				if v:IsA("ScreenGui") then
+					v.Enabled = false
 				end
 			end
-		end
+			get("HalloweenEventAPI/ProgressTaming"):InvokeServer(true)
+			get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
+			get("PayAPI/Collect"):FireServer()
+			get("HousingAPI/ClaimAllDeliveries"):FireServer()
+			if not ClientData.get_data()[LocalPlayer.Name].popcorn_manager.lily_pad_states[1] then
+				for i=1, 6 do
+					wait()
+					get("HalloweenEventAPI/ClaimLilyPadCandy"):FireServer(i)
+				end
+			end
+			if CurrentLocation() == "MainMap" then
+				for i,v in pairs(workspace.Interiors["MainMap!Fall"]:GetChildren()) do
+					if v:IsA("Folder") then
+						v:Destroy()
+					end
+				end
+			end
+		end)
 	end
 end)
 
