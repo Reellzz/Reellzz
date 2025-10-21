@@ -163,7 +163,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(1.5) do
+	while wait(0.5) do
 		if workspace.StaticMap.hauntlet_minigame_state.players_loading.Value == true then
 			get("MinigameAPI/AttemptJoin"):FireServer("hauntlet", true)
 		elseif workspace.StaticMap.costume_party_minigame_state.players_loading.Value == true then
@@ -178,10 +178,25 @@ spawn(function()
 	while wait(3) do
 		spawn(function()
 			if TDC.is_participating then
-				for i,v in pairs(workspace.Interiors[TDC.instanced_minigame.minigame_destination_id].GamePlots:GetChildren()) do
-					wait(0.1)
-					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(v.Name))
+				
+				for a,b in pairs(TDC.instanced_minigame.plot_houses) do
+					for c,d in pairs(b) do
+						if d.knock_threshold == 3 then
+							for i=1, 3 do
+								wait()
+								get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
+							end
+						elseif d.knock_threshold == 2 then
+							for i=1, 2 do
+								wait()
+								get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
+							end
+						elseif d.knock_threshold == 1 then
+							get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(c))
+						end
+					end
 				end
+				
 			end
 		end)
 	end
