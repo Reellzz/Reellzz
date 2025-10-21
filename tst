@@ -131,6 +131,7 @@ wait(3)
 for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 	if v.properties.age == 6 then
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+		break
 	else
 		for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 			get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
@@ -144,7 +145,6 @@ spawn(function()
 		get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
 		get("PayAPI/Collect"):FireServer()
 		get("HousingAPI/ClaimAllDeliveries"):FireServer()
-		get("MinigameAPI/GetOfflineInviteLobbyDetails"):InvokeServer()
 	end
 end)
 
@@ -169,7 +169,7 @@ spawn(function()
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", i)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
-					game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workspace.Terrain[""..TDC.instanced_minigame.minigame_destination_id].Visual.TreatDash_V1.CandyBasketMain.CandyZone.Ring.CFrame
+					game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workspace.interiors[TDC.instanced_minigame.minigame_destination_id].Visual.TreatDash_V1.CandyBasketMain.CandyZone.Ring.CFrame
 				end
 			end
 		end)
@@ -234,6 +234,8 @@ spawn(function()
 				end
 				
 				get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "player_selected_door", get_room(), 1)
+				get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "player_selected_door", get_room(), 2)
+				get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "player_selected_door", get_room(), 3)
 
 			elseif FFM.is_participating then
 				if FFM.instanced_minigame.category == "Scary" then
@@ -345,7 +347,6 @@ spawn(function()
 		local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
 
 		SendWebhook(Webhook,"Log", "**User data**\nUser: "..LocalPlayer.Name.."\nBuck: "..ClientData.get_data()[LocalPlayer.Name]["money"].."\nCandy: "..ClientData.get_data()[LocalPlayer.Name]["candy_2025"].."\nLocation: "..CurrentLocation().."\n\n**Halloween pet**\nWidow: "..Widow.."\nKitty bat: "..Kittybat.."\n\n**Server info**\nPlayers: "..PlayerCount.."\nTime: "..timestamp)
-
 	end
 end)
 
@@ -362,20 +363,6 @@ spawn(function()
 				local timestamp = string.format("%02i:%02i %s", ((hour - 1) % 12) + 1, date.min, ampm)
 
 				SendWebhook("https://discord.com/api/webhooks/1429505705089695744/8Mje6LQTrIvmfH5ZbeJibXhsxfZqKZV8Gx8CTs_qS8OPXAYTkI_KaIJEpINx62zrNUX3","Minigame Joined", "**User data**\nUser: "..LocalPlayer.Name.."\nTime: "..timestamp)
-				return original(...)
-			end
-		end
-	end
-end)
-
-spawn(function()
-	local aad = require(game:GetService("ReplicatedStorage").ClientModules.Game.MinigameClientManager)
-
-	for k, v in pairs(aad) do
-		if typeof(v) == "function" and k == "remove" then
-			local original = v
-			aad[k] = function(...)
-				get("TeamAPI/Spawn"):InvokeServer()
 				return original(...)
 			end
 		end
