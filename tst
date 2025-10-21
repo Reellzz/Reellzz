@@ -142,6 +142,11 @@ end
 
 spawn(function()
 	while wait(1) do
+		for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+			if v:IsA("ScreenGui") then
+				v.Enabled = false
+			end
+		end
 		get("HalloweenEventAPI/ProgressTaming"):InvokeServer(true)
 		get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
 		get("PayAPI/Collect"):FireServer()
