@@ -142,9 +142,23 @@ end
 
 spawn(function()
 	while wait(1) do
+		get("HalloweenEventAPI/ProgressTaming"):InvokeServer(true)
 		get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
 		get("PayAPI/Collect"):FireServer()
 		get("HousingAPI/ClaimAllDeliveries"):FireServer()
+		if not ClientData.get_data()[LocalPlayer.Name].popcorn_manager.lily_pad_states[1] then
+			for i=1, 6 do
+				wait()
+				get("HalloweenEventAPI/ClaimLilyPadCandy"):FireServer(i)
+			end
+		end
+		if CurrentLocation() == "MainMap" then
+			for i,v in pairs(workspace.Interiors["MainMap!Fall"]:GetChildren()) do
+				if v:IsA("Folder") then
+					v:Destroy()
+				end
+			end
+		end
 	end
 end)
 
@@ -164,12 +178,9 @@ spawn(function()
 	while wait(3) do
 		spawn(function()
 			if TDC.is_participating then
-				for i=1, 150 do
-					wait()
-					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", i)
-					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", 9742042319)
-					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "request_trashcan_enter", 10)
-					game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workspace.interiors[TDC.instanced_minigame.minigame_destination_id].Visual.TreatDash_V1.CandyBasketMain.CandyZone.Ring.CFrame
+				for i,v in pairs(workspace.Interiors[TDC.instanced_minigame.minigame_destination_id].GamePlots:GetChildren()) do
+					wait(0.1)
+					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "house_knock", tonumber(v.Name))
 				end
 			end
 		end)
@@ -196,14 +207,14 @@ spawn(function()
 					get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "player_used_item", "GoldenHeartPotion")
 				end	
 
-				--[[Use GoldenKey
+				--Use GoldenKey
 				if HMC.instanced_minigame.inventory.GoldenKey >=1 then
 					for i,v in pairs(workspace.Interiors[HMC.instanced_minigame.minigame_destination_id].Rooms[get_room()].ExitDoors:GetChildren()) do
 						if v:GetAttribute("entry_name") == "Golden" then
 							get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "player_selected_door", get_room(), tonumber(v.Name))
 						end
 					end
-				end]]
+				end
 
 				-- Use RainbowWand
 				if HMC.instanced_minigame.inventory.CellPhone >=1 and HMC.instanced_minigame.inventory.RainbowWand == 0 then
