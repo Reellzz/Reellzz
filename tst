@@ -442,7 +442,7 @@ while wait(1) do
 		if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_uniquee] then
 			for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]) do
 
-				if i == "thirsty" then
+				if i == "thirsty" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["thirsty"]: start task')
@@ -463,7 +463,7 @@ while wait(1) do
 						print('["debug"]["thirsty"]: end task')
 					end
 				end
-				if i == "hungry" then
+				if i == "hungry" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["hungry"]: start task')
@@ -484,7 +484,7 @@ while wait(1) do
 						print('["debug"]["hungry"]: end task')
 					end
 				end
-				if i == "sickk" then
+				if i == "sick" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["sick"]: start task')
@@ -514,7 +514,7 @@ while wait(1) do
 						print('["debug"]["sick"]: end task')
 					end
 				end
-				if i == "boredd" then
+				if i == "bored" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["bored"]: start task')
@@ -535,7 +535,7 @@ while wait(1) do
 						print('["debug"]["bored"]: end task')
 					end
 				end
-				if i == "campingg" then
+				if i == "camping" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["camping"]: start task')
@@ -556,7 +556,7 @@ while wait(1) do
 						print('["debug"]["camping"]: end task')
 					end
 				end
-				if i == "beach_partyy" then
+				if i == "beach_party" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["beach_party"]: start task')
@@ -577,7 +577,7 @@ while wait(1) do
 						print('["debug"]["beach_party"]: end task')
 					end
 				end
-				if i == "pizza_party" then
+				if i == "pizza_party" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["pizza_party"]: start task')
@@ -597,7 +597,7 @@ while wait(1) do
 						print('["debug"]["pizza_party"]: end task')
 					end
 				end
-				if i == "salon" then
+				if i == "salon" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["salon"]: start task')
@@ -616,7 +616,7 @@ while wait(1) do
 						print('["debug"]["salon"]: end task')
 					end
 				end
-				if i == "mystery" then
+				if i == "mystery" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["mystery"]: start task')
@@ -636,7 +636,7 @@ while wait(1) do
 						print('["debug"]["mystery"]: end task')
 					end
 				end
-				if i == "schooll" then
+				if i == "school" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["school"]: start task')
@@ -656,7 +656,7 @@ while wait(1) do
 						print('["debug"]["school"]: end task')
 					end
 				end
-				if i == "dirty" then
+				if i == "dirty" and not in_minigame and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["dirty"]: start task')
@@ -685,7 +685,7 @@ while wait(1) do
 						print('["debug"]["dirty"]: end task')
 					end
 				end
-				if i == "sleepy" then
+				if i == "sleepy" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["sleepy"]: start task')
@@ -713,7 +713,7 @@ while wait(1) do
 						print('["debug"]["sleepy"]: end task')
 					end
 				end
-				if i == "pet_me" then
+				if i == "pet_me" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["pet_me"]: start task')
@@ -734,7 +734,7 @@ while wait(1) do
 						print('["debug"]["pet_me"]: end task')
 					end
 				end
-				if i == "walk" then
+				if i == "walk" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["walk"]: start task')
@@ -757,7 +757,7 @@ while wait(1) do
 						print('["debug"]["walk"]: end task')
 					end
 				end
-				if i == "play" then
+				if i == "play" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["play"]: start task')
@@ -780,7 +780,7 @@ while wait(1) do
 						print('["debug"]["play"]: end task')
 					end
 				end
-				if i == "ride" then
+				if i == "ride" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["ride"]: start task')
@@ -808,7 +808,7 @@ while wait(1) do
 						print('["debug"]["ride"]: end task')
 					end
 				end
-				if i == "toilet" then
+				if i == "toilet" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["toilet"]: start task')
@@ -837,7 +837,7 @@ while wait(1) do
 						print('["debug"]["toilet"]: end task')
 					end
 				end
-				if i == "scale_the_organ" then
+				if i == "scale_the_organ" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["scale_the_organ"]: start task')
@@ -867,7 +867,7 @@ while wait(1) do
 						print('["debug"]["scale_the_organ"]: end task')
 					end
 				end
-				if i == "wear_scare" then
+				if i == "wear_scare" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["wear_scare"]: start task')
