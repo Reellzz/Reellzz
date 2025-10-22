@@ -107,7 +107,7 @@ else
 	end
 end
 
-wait(3)
+wait(5)
 
 for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 	if v.properties.age == 6 then
@@ -150,14 +150,29 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(0.1) do
-		if workspace.StaticMap.hauntlet_minigame_state.players_loading.Value == true then
-			get("MinigameAPI/AttemptJoin"):FireServer("hauntlet", true)
-		elseif workspace.StaticMap.costume_party_minigame_state.players_loading.Value == true then
-			get("MinigameAPI/AttemptJoin"):FireServer("costume_party", true)
-		elseif workspace.StaticMap.sleep_or_treat_minigame_state.players_loading.Value == true then
-			get("MinigameAPI/AttemptJoin"):FireServer("sleep_or_treat", true)
-		end
+	while true do
+		spawn(function()
+			if not HMC.is_participating and not FFM.is_participating and not TDC.is_participating and not workspace.StaticMap.sleep_or_treat_minigame_state.players_loading.Value and not workspace.StaticMap.costume_party_minigame_state.players_loading.Value and not workspace.StaticMap.hauntlet_minigame_state.players_loading.Value then
+				local function getSecondsLeft(ts)
+					local now = os.time(os.date("!*t", os.time() - 5 * 60 * 60))
+					return ts - now
+				end
+
+				local data = ClientData.get_data()[LocalPlayer.Name]
+				local times = {
+					hauntlet = getSecondsLeft(data.hauntlet_cycle_timestamp.timestamp),
+					costume_party = getSecondsLeft(data.costume_party_cycle_timestamp.timestamp),
+					sleep_or_treat = getSecondsLeft(data.sleep_or_treat_cycle_timestamp.timestamp)
+				}
+
+				local target = "hauntlet"
+				if times.costume_party < times[target] then target = "costume_party" end
+				if times.sleep_or_treat < times[target] then target = "sleep_or_treat" end
+
+				LocalPlayer.character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations[target].CFrame
+			end
+		end)
+		wait(1)
 	end
 end)
 
@@ -168,6 +183,12 @@ spawn(function()
 		elseif not HMC.is_participating and not FFM.is_participating and not TDC.is_participating then
 			in_minigame = false
 		end
+	end
+end)
+
+spawn(function()
+	if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
+		SetLocation("MainMap", "MainDoor", {})
 	end
 end)
 
@@ -446,8 +467,8 @@ while wait(1) do
 						print('["debug"]["thirsty"]: start task')
 
 						get("ShopAPI/BuyItem"):InvokeServer("food", "water", {["buy_count"] = 1})
-						wait(0.5)
-						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
+						wait(1)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2",{additional_consume_uniques = {},["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
 
 						pcall(function()
 							while wait() do
@@ -467,9 +488,9 @@ while wait(1) do
 						print('["debug"]["hungry"]: start task')
 
 						get("ShopAPI/BuyItem"):InvokeServer("food", "apple", {["buy_count"] = 1})
-						wait(0.5)
-						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2", {["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
-
+						wait(1)
+						get("PetObjectAPI/CreatePetObject"):InvokeServer("__Enum_PetObjectCreatorType_2",{additional_consume_uniques = {},["pet_unique"] = ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"],["unique_id"] = ClientData.get_data()[LocalPlayer.Name]["equip_manager"]["food"][1]["unique"]})
+						
 						pcall(function()
 							while wait() do
 								repeat wait()
@@ -480,138 +501,6 @@ while wait(1) do
 
 						TaskFarming = false
 						print('["debug"]["hungry"]: end task')
-					end
-				end
-				if i == "sick" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["sick"]: start task')
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-
-						get("LocationAPI/SetLocation"):FireServer("Hospital")
-
-						local args = {
-							"f-14",
-							"UseBlock",
-							"Yes",
-							game:GetService("Players").LocalPlayer.Character
-						}
-
-						get("HousingAPI/ActivateInteriorFurniture"):InvokeServer(unpack(args))
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["sick"])
-								return
-							end
-						end)
-
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-						TaskFarming = false
-						print('["debug"]["sick"]: end task')
-					end
-				end
-				if i == "bored" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["bored"]: start task')
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, 5, 0)
-
-						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["bored"])
-								return
-							end
-						end)
-
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-						TaskFarming = false
-						print('["debug"]["bored"]: end task')
-					end
-				end
-				if i == "camping" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["camping"]: start task')
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
-
-						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["camping"])
-								return
-							end
-						end)
-
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-						TaskFarming = false
-						print('["debug"]["camping"]: end task')
-					end
-				end
-				if i == "beach_party" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["beach_party"]: start task')
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, 5, 0)
-
-						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["beach_party"])
-								return
-							end
-						end)
-
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-						TaskFarming = false
-						print('["debug"]["beach_party"]: end task')
-					end
-				end
-				if i == "pizza_party" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["pizza_party"]: start task')
-
-						get("LocationAPI/SetLocation"):FireServer("PizzaShop")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["pizza_party"])
-								return
-							end
-						end)
-
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-						TaskFarming = false
-						print('["debug"]["pizza_party"]: end task')
-					end
-				end
-				if i == "salon" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["salon"]: start task')
-
-						get("LocationAPI/SetLocation"):FireServer("Salon")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["salon"])
-								return
-							end
-						end)
-
-						TaskFarming = false
-						print('["debug"]["salon"]: end task')
 					end
 				end
 				if i == "mystery" and not in_minigame then
@@ -635,34 +524,15 @@ while wait(1) do
 						print('["debug"]["mystery"]: end task')
 					end
 				end
-				if i == "school" and not in_minigame then
-					if not TaskFarming then
-						TaskFarming = true
-						print('["debug"]["school"]: start task')
-						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MainPart.CFrame + Vector3.new(0, 5, 0)
-
-						get("LocationAPI/SetLocation"):FireServer("School")
-
-						pcall(function()
-							while wait() do
-								repeat wait()
-								until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["school"])
-								return
-							end
-						end)
-
-						TaskFarming = false
-						print('["debug"]["school"]: end task')
-					end
-				end
 				if i == "dirty" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["dirty"]: start task')
 
-						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
-						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
-						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+						if not workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name) then
+							get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+							get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+						end
 
 						wait(2)
 
@@ -689,9 +559,10 @@ while wait(1) do
 						TaskFarming = true
 						print('["debug"]["sleepy"]: start task')
 
-						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
-						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
-						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+						if not workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name) then
+							get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+							get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+						end
 
 						wait(2)
 
@@ -812,9 +683,10 @@ while wait(1) do
 						TaskFarming = true
 						print('["debug"]["toilet"]: start task')
 
-						get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
-						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
-						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
+						if not workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name) then
+							get("HousingAPI/UnsubscribeFromHouse"):InvokeServer(LocalPlayer)
+							get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
+						end
 
 						wait(2)
 
