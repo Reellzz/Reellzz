@@ -130,11 +130,11 @@ end
 spawn(function()
 	while wait(1) do
 		spawn(function()
-			--for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
-			--	if v:IsA("ScreenGui") and v.Name ~= "MinigameInGameApp" then
-			--		v.Enabled = false
-			--	end
-			--end
+			for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+				if v:IsA("ScreenGui") and v.Name ~= "MinigameInGameApp" then
+					v.Enabled = false
+				end
+			end
 			get("HalloweenEventAPI/ProgressTaming"):InvokeServer(true)
 			get("HalloweenEventAPI/ClaimTreatBag"):InvokeServer()
 			get("PayAPI/Collect"):FireServer()
@@ -437,7 +437,7 @@ TaskFarming = false
 
 while wait(1) do
 	pcall(function()
-		if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_uniquee] then
+		if ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique] then
 			for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]) do
 
 				if i == "thirsty" and not in_minigame then
@@ -619,16 +619,17 @@ while wait(1) do
 						TaskFarming = true
 						print('["debug"]["mystery"]: start task')
 
-						for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
-							wait(0.65)
-							pcall(function()
-								print("1", a)
-								get("AilmentsAPI/ChooseMysteryAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"], "mystery", 1, a)
-								wait(0.65)
-								print("2", a)
-								get("AilmentsAPI/ChooseMysteryAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"], "mystery", 2, a)
-							end)
-						end
+						pcall(function()
+							for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
+								if b["preference_status"] then
+									get("AilmentsAPI/ChooseMysteryAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"], "mystery", 1, a)
+									wait(1)
+									get("AilmentsAPI/ChooseMysteryAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"], "mystery", 1, a)
+									wait(1)
+									get("AilmentsAPI/ChooseMysteryAilment"):FireServer(ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"], "mystery", 1, a)
+								end
+							end
+						end)
 
 						TaskFarming = false
 						print('["debug"]["mystery"]: end task')
@@ -663,7 +664,7 @@ while wait(1) do
 						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
 
-						wait(3)
+						wait(2)
 
 						if BathFinder() then
 							local args = {
@@ -692,7 +693,7 @@ while wait(1) do
 						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
 
-						wait(3)
+						wait(2)
 
 						if BedFinder() then
 							local args = {
@@ -815,7 +816,7 @@ while wait(1) do
 						get("HousingAPI/SubscribeToHouse"):FireServer(LocalPlayer)
 						get("LocationAPI/SetLocation"):FireServer("housing", LocalPlayer)
 
-						wait(3)
+						wait(2)
 
 						if ToiletFinder() then
 							local args = {
