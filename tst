@@ -175,8 +175,6 @@ spawn(function()
 	while wait(1) do
 		spawn(function()
 			if TDC.is_participating then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Interiors[TDC.instanced_minigame.minigame_destination_id].Visual.TreatDash_V1.CandyBasketMain.CandyZone.Ring.CFrame
-
 				if TDC.instanced_minigame.sleep_state.is_asleep then
 					get("MinigameAPI/MessageServer"):FireServer(TDC.instanced_minigame.minigame_id, "rescue_sleeping", game.Players.LocalPlayer.UserId)
 				end
