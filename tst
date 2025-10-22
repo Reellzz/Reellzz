@@ -654,7 +654,7 @@ while wait(1) do
 						print('["debug"]["school"]: end task')
 					end
 				end
-				if i == "dirty" and not in_minigame and not in_minigame then
+				if i == "dirty" and not in_minigame then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["dirty"]: start task')
