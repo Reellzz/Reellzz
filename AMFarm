@@ -93,6 +93,16 @@ end
 
 if not PetFound then
 	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+		if v.id == "dog" or v.id == "cat" then
+			get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+			PetFound = true
+			break
+		end
+	end
+end
+
+if not PetFound then
+	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
 		PetFound = true
 		break
