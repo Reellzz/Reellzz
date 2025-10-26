@@ -81,24 +81,20 @@ spawn(function()
 	end
 end)
 
+PetFound = false
+
 for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 	if v.properties.age == 6 then
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+		PetFound = true
 		break
-	elseif v.properties.age == 5 then
+	end
+end
+
+if not PetFound then
+	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
-		break
-	elseif v.properties.age == 4 then
-		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
-		break
-	elseif v.properties.age == 3 then
-		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
-		break
-	elseif v.properties.age == 2 then
-		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
-		break
-	elseif v.properties.age == 1 then
-		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+		PetFound = true
 		break
 	end
 end
