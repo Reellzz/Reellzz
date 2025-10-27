@@ -171,7 +171,7 @@ while wait(1) do
 							"Yes",
 							game:GetService("Players").LocalPlayer.Character
 						}
-						
+
 						get("HousingAPI/ActivateInteriorFurniture"):InvokeServer(unpack(args))
 
 						pcall(function()
@@ -336,7 +336,7 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["debug"]["dirty"]: start task')
-						
+
 						local args = {
 							[1] = LocalPlayer,
 							[2] = Furniture.modernshower,
@@ -429,9 +429,9 @@ while wait(1) do
 								return
 							end
 						end)
-						
+
 						wait(1)
-						
+
 						get("AdoptAPI/EjectBaby"):FireServer(workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]))
 
 						TaskFarming = false
@@ -470,8 +470,6 @@ while wait(1) do
 							if v.id == "stroller-default" then
 								Stroller = v.unique
 								get("ToolAPI/Equip"):InvokeServer(Stroller)
-								wait(2)
-								get("AdoptAPI/UseStroller"):InvokeServer(game.Players[game.Players.LocalPlayer.Name],workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
 							end
 						end
 
