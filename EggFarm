@@ -504,8 +504,6 @@ while wait(1) do
 								if v.id == "stroller-default" then
 									Stroller = v.unique
 									get("ToolAPI/Equip"):InvokeServer(Stroller)
-									wait(2)
-									get("AdoptAPI/UseStroller"):InvokeServer(game.Players[game.Players.LocalPlayer.Name],workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"]),LocalPlayer.Character.StrollerTool.ModelHandle.TouchToSits.TouchToSit)
 								end
 							end
 
