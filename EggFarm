@@ -134,17 +134,21 @@ while wait(1) do
 							TaskFarming = true
 							print('["debug"]["thirsty"]: start task')
 
-							local args = {
-								[1] = LocalPlayer,
-								[2] = Furniture.pet_water_bowl,
-								[3] = "UseBlock",
-								[4] = {
-									["cframe"] = LocalPlayer.Character.Head.CFrame
-								},
-								[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
-							}
+							spawn(function()
+								local args = {
+									[1] = LocalPlayer,
+									[2] = Furniture.pet_water_bowl,
+									[3] = "UseBlock",
+									[4] = {
+										["cframe"] = LocalPlayer.Character.Head.CFrame
+									},
+									[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+								}
 
-							get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+								get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							end)
+
+							wait(15)
 
 							TaskFarming = false
 							print('["debug"]["thirsty"]: end task')
@@ -155,17 +159,21 @@ while wait(1) do
 							TaskFarming = true
 							print('["debug"]["hungry"]: start task')
 
-							local args = {
-								[1] = LocalPlayer,
-								[2] = Furniture.pet_food_bowl,
-								[3] = "UseBlock",
-								[4] = {
-									["cframe"] = LocalPlayer.Character.Head.CFrame
-								},
-								[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
-							}
+							spawn(function()
+								local args = {
+									[1] = LocalPlayer,
+									[2] = Furniture.pet_food_bowl,
+									[3] = "UseBlock",
+									[4] = {
+										["cframe"] = LocalPlayer.Character.Head.CFrame
+									},
+									[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+								}
 
-							get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+								get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							end)
+
+							wait(15)
 
 							TaskFarming = false
 							print('["debug"]["hungry"]: end task')
@@ -351,17 +359,21 @@ while wait(1) do
 							TaskFarming = true
 							print('["debug"]["dirty"]: start task')
 
-							local args = {
-								[1] = LocalPlayer,
-								[2] = Furniture.modernshower,
-								[3] = "UseBlock",
-								[4] = {
-									["cframe"] = LocalPlayer.Character.Head.CFrame
-								},
-								[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
-							}
+							spawn(function()
+								local args = {
+									[1] = LocalPlayer,
+									[2] = Furniture.modernshower,
+									[3] = "UseBlock",
+									[4] = {
+										["cframe"] = LocalPlayer.Character.Head.CFrame
+									},
+									[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+								}
 
-							get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+								get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							end)
+
+							wait(15)
 
 							TaskFarming = false
 							print('["debug"]["dirty"]: end task')
@@ -372,16 +384,20 @@ while wait(1) do
 							TaskFarming = true
 							print('["debug"]["sleepy"]: start task')
 
-							local args = {
-								LocalPlayer,
-								Furniture.basiccrib,
-								"UseBlock",
-								{
-									cframe = LocalPlayer.Character.Head.CFrame
-								},
-								workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
-							}
-							get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							spawn(function()
+								local args = {
+									LocalPlayer,
+									Furniture.basiccrib,
+									"UseBlock",
+									{
+										cframe = LocalPlayer.Character.Head.CFrame
+									},
+									workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+								}
+								get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							end)
+
+							wait(15)
 
 							TaskFarming = false
 							print('["debug"]["sleepy"]: end task')
@@ -392,17 +408,21 @@ while wait(1) do
 							TaskFarming = true
 							print('["debug"]["toilet"]: start task')
 
-							local args = {
-								[1] = LocalPlayer,
-								[2] = Furniture.toilet,
-								[3] = "Seat1",
-								[4] = {
-									["cframe"] = LocalPlayer.Character.Head.CFrame
-								},
-								[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
-							}
+							spawn(function()
+								local args = {
+									[1] = LocalPlayer,
+									[2] = Furniture.toilet,
+									[3] = "Seat1",
+									[4] = {
+										["cframe"] = LocalPlayer.Character.Head.CFrame
+									},
+									[5] = workspace:FindFirstChild("Pets"):FindFirstChild(Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_id"]]["name"])
+								}
 
-							get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+								get("HousingAPI/ActivateFurniture"):InvokeServer(unpack(args))
+							end)
+
+							wait(15)
 
 							TaskFarming = false
 							print('["debug"]["toilet"]: end task')
