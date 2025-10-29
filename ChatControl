@@ -11,6 +11,10 @@ function onPlayerChatted(player)
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("i sent you a trade request.")
 			end
+			
+			if message == ".buy cat" then
+				get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 99})
+			end
 
 			if message == ".teleport" then
 				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players:FindFirstChild("xlsxh"))
