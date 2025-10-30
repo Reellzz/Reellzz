@@ -15,7 +15,7 @@ function onPlayerChatted(player)
 			
 			if message == ".buy" then
 				for i=1, 99 do
-					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
+					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 				end
 			end
 
