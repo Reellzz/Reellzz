@@ -3,8 +3,6 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
-setfpccap(5)
-
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
 		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
@@ -27,7 +25,7 @@ function onPlayerChatted(player)
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if message == ".add pet" then
+			if message == ".add" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" or v["kind"] == "halloween_2025_dj_snooze" then
 						wait()
