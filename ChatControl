@@ -3,7 +3,7 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
-local prefix = "."
+local prefix = "!"
 
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
@@ -14,7 +14,12 @@ function onPlayerChatted(player)
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i sent you a trade request.")
 			end
 			
-			if message == prefix.."buy ghostcat" then
+			if message == prefix..""..game.Players.LocalPlayer.Name then
+				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i sent you a trade request.")
+			end
+			
+			if message == prefix.."buy ghostly" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 				end
@@ -27,17 +32,17 @@ function onPlayerChatted(player)
 			end
 
 			if message == prefix.."teleport" then
+				wait(math.random(0.1, 1))
 				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players[player.Name])
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i'm teleporting to you.")
 			end
 
 			if string.sub(message, 1, 5) == prefix.."bio " then
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if message == prefix.."add pet" then
+			if string.sub(message, 1, 5) == prefix.."add " then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" or v["kind"] == "halloween_2025_dj_snooze" then
+					if v["kind"]:match(string.sub(message, 6)) then
 						wait()
 						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
 					end
@@ -49,12 +54,12 @@ function onPlayerChatted(player)
 				get("TradeAPI/ConfirmTrade"):FireServer()
 			end
 			
-			if message == prefix.."d interact" then
-				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
+			if message == prefix.."jump" then
+				game.Players.LocalPlayer.Character.Humanoid.Jump = true
 			end
 			
-			if message == prefix.."e interact" then
-				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(false)
+			if string.sub(message, 1, #prefix + 12) == prefix .. "stopinteract" then
+				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(string.sub(message, #prefix + 9):match("^%s*(.*)$"))
 			end
 			
 			if message == prefix.."unequip" then
