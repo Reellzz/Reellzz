@@ -53,7 +53,7 @@ function onPlayerChatted(player)
 				for i, v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"]:lower():match(string.sub(message, #prefix + 7 + 1):lower()) then
 						get("TradeAPI/SendTradeRequest"):FireServer(player)
-						get("InteractablesAPI/DisableInteractionWithMe"):FireServer("I have the pet you're looking for, I sent you a trade request.")
+						game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("I have the pet you're looking for, I sent you a trade request.")
 						break
 					end
 				end
