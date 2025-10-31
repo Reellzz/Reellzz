@@ -40,7 +40,7 @@ function onPlayerChatted(player)
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if string.sub(message, 1, 5) == prefix.."add " then
+			if string.sub(message, 1, 4) == prefix.."add " then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"]:match(string.sub(message, 6)) then
 						wait()
@@ -50,10 +50,10 @@ function onPlayerChatted(player)
 			end
 			
 			if string.sub(message, 1, #prefix + 6) == prefix.."whohas" then
-				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"]:match(string.sub(message, 6)) then
-						get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
-						get("InteractablesAPI/DisableInteractionWithMe"):FireServer("I have the pet you looking for, i sent you trade request.")
+				for i, v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+					if v["kind"]:lower():match(string.sub(message, #prefix + 7 + 1):lower()) then
+						get("TradeAPI/SendTradeRequest"):FireServer(player)
+						get("InteractablesAPI/DisableInteractionWithMe"):FireServer("I have the pet you're looking for, I sent you a trade request.")
 						break
 					end
 				end
@@ -77,7 +77,7 @@ function onPlayerChatted(player)
 			end
 
 
-			if message == ".disconnect" then
+			if message == prefix.."disconnect" then
 				game:Shutdown()
 			end
 
