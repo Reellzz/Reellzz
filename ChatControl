@@ -9,6 +9,7 @@ function onPlayerChatted(player)
 
 			if message == ".trade" then
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("hey creator, i sent you a trade request.")
 			end
 			
 			if message == ".buy" then
@@ -19,6 +20,7 @@ function onPlayerChatted(player)
 
 			if message == ".teleport" then
 				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players[player.Name])
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("teleporting to you.")
 			end
 
 			if string.sub(message, 1, 5) == ".bio " then
