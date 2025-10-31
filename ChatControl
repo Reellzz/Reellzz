@@ -5,6 +5,19 @@ local get = Fsys("RouterClient").get
 
 local prefix = "!"
 
+local Tutorial = require(game:GetService("ReplicatedStorage").ClientModules.Game.Tutorial.LegacyTutorial)
+local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
+
+if not License.player_has_trade_license() then
+	get("SettingsAPI/SetBooleanFlag"):FireServer("has_talked_to_trade_quest_npc", true)
+	get("TradeAPI/BeginQuiz"):FireServer()
+	for i, v in pairs(require(game.ReplicatedStorage:WaitForChild("ClientModules").Core.ClientData).get("trade_license_quiz_manager")["quiz"]) do
+		local answer = v["answer"]
+		get("TradeAPI/AnswerQuizQuestion"):FireServer(answer)
+		task.wait()
+	end
+end
+
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
 		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
@@ -40,7 +53,7 @@ function onPlayerChatted(player)
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if string.sub(message, 1, 5) == prefix.."add " then
+			if string.sub(message, 1, 4) == prefix.."add " then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"]:match(string.sub(message, 6)) then
 						wait()
