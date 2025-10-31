@@ -3,37 +3,39 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
+local prefix = "."
+
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
 		if player.Name == "xlsxh" or player.Name == "tracy_gltx" then
 
-			if message == ".trade" then
+			if message == prefix.."trade" then
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("hey creator, i sent you a trade request.")
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i sent you a trade request.")
 			end
 			
-			if message == ".buy ghostcat" then
+			if message == prefix.."buy ghostcat" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 				end
 			end
 			
-			if message == ".buy djsnooze" then
+			if message == prefix.."buy djsnooze" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
 				end
 			end
 
-			if message == ".teleport" then
+			if message == prefix.."teleport" then
 				get("LocationAPI/TeleToPlayer"):InvokeServer(game.Players[player.Name])
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("teleporting to you.")
+				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i'm teleporting to you.")
 			end
 
-			if string.sub(message, 1, 5) == ".bio " then
+			if string.sub(message, 1, 5) == prefix.."bio " then
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if message == ".add pet" then
+			if message == prefix.."add pet" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" or v["kind"] == "halloween_2025_dj_snooze" then
 						wait()
@@ -42,16 +44,29 @@ function onPlayerChatted(player)
 				end
 			end
 
-			if message == ".accept" then
+			if message == prefix.."accept" then
 				get("TradeAPI/AcceptNegotiation"):FireServer()
 				get("TradeAPI/ConfirmTrade"):FireServer()
 			end
+			
+			if message == prefix.."d interact" then
+				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
+			end
+			
+			if message == prefix.."e interact" then
+				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(false)
+			end
+			
+			if message == prefix.."unequip" then
+				get("ToolAPI/UnequipAll"):FireServer()
+			end
+
 
 			if message == ".disconnect" then
 				game:Shutdown()
 			end
 
-			if message == ".rejoin" then
+			if message == prefix.."rejoin" then
 				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
 			end
 
