@@ -40,7 +40,7 @@ function onPlayerChatted(player)
 				get("SettingsAPI/SetSetting"):FireServer("rp_name", string.sub(message, 6))
 			end
 
-			if string.sub(message, 1, 4) == prefix.."add " then
+			if string.sub(message, 1, 5) == prefix.."add " then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"]:match(string.sub(message, 6)) then
 						wait()
