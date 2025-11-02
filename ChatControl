@@ -18,9 +18,11 @@ if not License.player_has_trade_license() then
 	end
 end
 
-for i=1, 99 do
+spawn(function()
+while wait() do
 	get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 end
+end)
 
 function onPlayerChatted(player)
 	player.Chatted:Connect(function(message)
@@ -66,7 +68,7 @@ function onPlayerChatted(player)
 				end
 			end
 
-if message == prefix.."add hallo " then
+if message == prefix.."ah " then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "halloween_2025_dj_snooze" or v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" then
 						wait()
