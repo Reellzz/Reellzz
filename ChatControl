@@ -19,7 +19,7 @@ if not License.player_has_trade_license() then
 end
 
 spawn(function()
-while wait() do
+while wait(1) do
 	get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 end
 end)
