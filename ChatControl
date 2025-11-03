@@ -5,23 +5,10 @@ local get = Fsys("RouterClient").get
 
 local prefix = "!"
 
-local Tutorial = require(game:GetService("ReplicatedStorage").ClientModules.Game.Tutorial.LegacyTutorial)
-local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
-
-if not License.player_has_trade_license() then
-	get("SettingsAPI/SetBooleanFlag"):FireServer("has_talked_to_trade_quest_npc", true)
-	get("TradeAPI/BeginQuiz"):FireServer()
-	for i, v in pairs(require(game.ReplicatedStorage:WaitForChild("ClientModules").Core.ClientData).get("trade_license_quiz_manager")["quiz"]) do
-		local answer = v["answer"]
-		get("TradeAPI/AnswerQuizQuestion"):FireServer(answer)
-		task.wait()
-	end
-end
-
 spawn(function()
-while wait(1) do
-	get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
-end
+	while wait(1) do
+		get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
+	end
 end)
 
 function onPlayerChatted(player)
@@ -33,17 +20,29 @@ function onPlayerChatted(player)
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i sent you a trade request.")
 			end
 			
+			if message == prefix.."licence" then
+				spawn(function()
+					get("SettingsAPI/SetBooleanFlag"):FireServer("has_talked_to_trade_quest_npc", true)
+					get("TradeAPI/BeginQuiz"):FireServer()
+					for i, v in pairs(require(game.ReplicatedStorage:WaitForChild("ClientModules").Core.ClientData).get("trade_license_quiz_manager")["quiz"]) do
+						local answer = v["answer"]
+						get("TradeAPI/AnswerQuizQuestion"):FireServer(answer)
+						task.wait()
+					end
+				end)
+			end
+
 			if message == prefix..""..game.Players.LocalPlayer.Name then
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players[player.Name])
 				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("Creator, i sent you a trade request.")
 			end
-			
+
 			if message == prefix.."buy ghostly" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_ghostly_cat", {["buy_count"] = 1})
 				end
 			end
-			
+
 			if message == prefix.."buy djsnooze" then
 				for i=1, 99 do
 					get("ShopAPI/BuyItem"):InvokeServer("pets", "halloween_2025_dj_snooze", {["buy_count"] = 1})
@@ -68,7 +67,7 @@ function onPlayerChatted(player)
 				end
 			end
 
-if message == prefix.."ah " then
+			if message == prefix.."ah" then
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "halloween_2025_dj_snooze" or v["kind"] == "halloween_2025_ghostly_cat" or v["kind"] == "halloween_2025_bat_cat" then
 						wait()
@@ -76,7 +75,7 @@ if message == prefix.."ah " then
 					end
 				end
 			end
-			
+
 			if string.sub(message, 1, #prefix + 6) == prefix.."whohas" then
 				for i, v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"]:lower():match(string.sub(message, #prefix + 7 + 1):lower()) then
@@ -91,15 +90,15 @@ if message == prefix.."ah " then
 				get("TradeAPI/AcceptNegotiation"):FireServer()
 				get("TradeAPI/ConfirmTrade"):FireServer()
 			end
-			
+
 			if message == prefix.."jump" then
 				game.Players.LocalPlayer.Character.Humanoid.Jump = true
 			end
-			
+
 			if string.sub(message, 1, #prefix + 12) == prefix .. "stopinteract" then
 				get("InteractablesAPI/DisableInteractionWithMe"):FireServer(string.sub(message, #prefix + 9):match("^%s*(.*)$"))
 			end
-			
+
 			if message == prefix.."unequip" then
 				get("ToolAPI/UnequipAll"):FireServer()
 			end
