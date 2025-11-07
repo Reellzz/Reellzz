@@ -1,3 +1,5 @@
+print("AMCheat Loading...")
+
 local LocalPlayer = game.Players.LocalPlayer
 local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
