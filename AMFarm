@@ -1,4 +1,5 @@
-print("AMCheat Loading...")
+repeat wait()
+until not game.Players.LocalPlayer.PlayerGui.AssetLoadUI.Enabled
 
 local LocalPlayer = game.Players.LocalPlayer
 local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
