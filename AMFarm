@@ -46,10 +46,12 @@ if not ClientData.get_data()[LocalPlayer.Name]["ftue_2022_starter_pack_manager"]
 		repeat wait()
 		until LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible
 
-		repeat wait()
-			LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
-			ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
-		until not LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
 	end)
 end
 
