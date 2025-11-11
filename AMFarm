@@ -179,17 +179,19 @@ wait(1)
 
 while wait(1) do
 	pcall(function()
-		--[[
-		if ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1] then
-			if not Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1].pet_id]["is_egg"] then
-				for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if Fsys("InventoryDB").pets[b.kind]["is_egg"] then
-						get("ToolAPI/Equip"):InvokeServer(b["unique"])
-						return
+		
+		if LocalPlayer.Name == "FdxFvi" then
+			if ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1] then
+				if not Fsys("InventoryDB").pets[ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1].pet_id]["is_egg"] then
+					for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+						if Fsys("InventoryDB").pets[b.kind]["is_egg"] then
+							get("ToolAPI/Equip"):InvokeServer(b["unique"])
+							return
+						end
 					end
 				end
 			end
-		end]]
+		end
 
 		wait(1)
 
