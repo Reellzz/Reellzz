@@ -129,10 +129,45 @@ if not ClientData.get_data()[LocalPlayer.Name]["ftue_2022_starter_pack_manager"]
 		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
 		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
 	end)
+	print("Closed ftue")
+end
+
+PetFound = false
+
+for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+	if v.properties.age == 6 then
+		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+		PetFound = true
+		break
+	end
+end
+
+if not PetFound then
+	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+		if v.id == "dog" or v.id == "cat" or v.id == "starter_egg" then
+			get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+			PetFound = true
+			break
+		end
+	end
+end
+
+if not PetFound then
+	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+		get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
+		PetFound = true
+		break
+	end
 end
 
 repeat wait()
 until ClientData.get_data()[LocalPlayer.Name].loaded_in
+
+wait(1)
+
+get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
+
+wait(1)
 
 get("TeamAPI/Spawn"):InvokeServer()
 
@@ -159,7 +194,7 @@ end
 
 if not PetFound then
 	for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-		if v.id == "dog" or v.id == "cat" then
+		if v.id == "dog" or v.id == "cat" or v.id == "starter_egg" then
 			get("ToolAPI/Equip"):InvokeServer(v.unique,{equip_as_last = true})
 			PetFound = true
 			break
@@ -201,7 +236,7 @@ while wait(1) do
 					if i == "thirsty" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["thirsty"]: start task')
+							print('["thirsty"]: start task')
 
 							spawn(function()
 								local args = {
@@ -224,13 +259,13 @@ while wait(1) do
 							wait(1)
 
 							TaskFarming = false
-							print('["debug"]["thirsty"]: end task')
+							print('["thirsty"]: end task')
 						end
 					end
 					if i == "hungry" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["hungry"]: start task')
+							print('["hungry"]: start task')
 
 							spawn(function()
 								local args = {
@@ -253,13 +288,13 @@ while wait(1) do
 							wait(1)
 
 							TaskFarming = false
-							print('["debug"]["hungry"]: end task')
+							print('["hungry"]: end task')
 						end
 					end
 					if i == "sick" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["sick"]: start task')
+							print('["sick"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("Hospital")
@@ -283,13 +318,13 @@ while wait(1) do
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
-							print('["debug"]["sick"]: end task')
+							print('["sick"]: end task')
 						end
 					end
 					if i == "bored" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["bored"]: start task')
+							print('["bored"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
@@ -308,13 +343,13 @@ while wait(1) do
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
-							print('["debug"]["bored"]: end task')
+							print('["bored"]: end task')
 						end
 					end
 					if i == "camping" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["camping"]: start task')
+							print('["camping"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("MainMap", LocalPlayer, "Default")
@@ -333,13 +368,13 @@ while wait(1) do
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
-							print('["debug"]["camping"]: end task')
+							print('["camping"]: end task')
 						end
 					end
 					if i == "beach_party" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["beach_party"]: start task')
+							print('["beach_party"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("MainMap", LocalPlayer, "Default")
@@ -358,13 +393,13 @@ while wait(1) do
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
-							print('["debug"]["beach_party"]: end task')
+							print('["beach_party"]: end task')
 						end
 					end
 					if i == "pizza_party" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["pizza_party"]: start task')
+							print('["pizza_party"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("PizzaShop")
@@ -379,13 +414,13 @@ while wait(1) do
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
-							print('["debug"]["pizza_party"]: end task')
+							print('["pizza_party"]: end task')
 						end
 					end
 					if i == "salon" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["salon"]: start task')
+							print('["salon"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("Salon")
@@ -399,13 +434,13 @@ while wait(1) do
 							end)
 
 							TaskFarming = false
-							print('["debug"]["salon"]: end task')
+							print('["salon"]: end task')
 						end
 					end
 					if i == "mystery" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["mystery"]: start task')
+							print('["mystery"]: start task')
 
 							pcall(function()
 								for a,b in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["ailments"][ClientData.get_data()[LocalPlayer.Name]["pet_char_wrappers"][1]["pet_unique"]]["mystery"]["components"]["mystery"]["components"]) do
@@ -418,13 +453,13 @@ while wait(1) do
 							end)
 
 							TaskFarming = false
-							print('["debug"]["mystery"]: end task')
+							print('["mystery"]: end task')
 						end
 					end
 					if i == "school" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["school"]: start task')
+							print('["school"]: start task')
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 
 							get("LocationAPI/SetLocation"):FireServer("School")
@@ -438,13 +473,13 @@ while wait(1) do
 							end)
 
 							TaskFarming = false
-							print('["debug"]["school"]: end task')
+							print('["school"]: end task')
 						end
 					end
 					if i == "dirty" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["dirty"]: start task')
+							print('["dirty"]: start task')
 
 							spawn(function()
 								local args = {
@@ -467,13 +502,13 @@ while wait(1) do
 							wait(1)
 
 							TaskFarming = false
-							print('["debug"]["dirty"]: end task')
+							print('["dirty"]: end task')
 						end
 					end
 					if i == "sleepy" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["sleepy"]: start task')
+							print('["sleepy"]: start task')
 
 							spawn(function()
 								local args = {
@@ -495,13 +530,13 @@ while wait(1) do
 							wait(1)
 
 							TaskFarming = false
-							print('["debug"]["sleepy"]: end task')
+							print('["sleepy"]: end task')
 						end
 					end
 					if i == "toilet" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["toilet"]: start task')
+							print('["toilet"]: start task')
 
 							spawn(function()
 								local args = {
@@ -524,13 +559,13 @@ while wait(1) do
 							wait(1)
 
 							TaskFarming = false
-							print('["debug"]["toilet"]: end task')
+							print('["toilet"]: end task')
 						end
 					end
 					if i == "pet_me" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["pet_me"]: start task')
+							print('["pet_me"]: start task')
 
 							pcall(function()
 								while wait() do
@@ -545,13 +580,13 @@ while wait(1) do
 							end)
 
 							TaskFarming = false
-							print('["debug"]["pet_me"]: end task')
+							print('["pet_me"]: end task')
 						end
 					end
 					if i == "walk" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["walk"]: start task')
+							print('["walk"]: start task')
 							
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 
@@ -566,13 +601,13 @@ while wait(1) do
 							wait(1)
 							
 							TaskFarming = false
-							print('["debug"]["walk"]: end task')
+							print('["walk"]: end task')
 						end
 					end
 					if i == "play" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["play"]: start task')
+							print('["play"]: start task')
 
 							ResetPet()
 
@@ -597,13 +632,13 @@ while wait(1) do
 							get("ToolAPI/UnequipAll"):FireServer()
 
 							TaskFarming = false
-							print('["debug"]["play"]: end task')
+							print('["play"]: end task')
 						end
 					end
 					if i == "ride" then
 						if not TaskFarming then
 							TaskFarming = true
-							print('["debug"]["ride"]: start task')
+							print('["ride"]: start task')
 							
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							
@@ -625,11 +660,208 @@ while wait(1) do
 							get("ToolAPI/UnequipAll"):FireServer()
 
 							TaskFarming = false
-							print('["debug"]["ride"]: end task')
+							print('["ride"]: end task')
 						end
 					end
 				end
 			end
 		end
+		
+		if ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["baby_ailments"] then
+			for i,v in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["baby_ailments"]) do
+				if i == "thirsty" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["thirsty"]: start task')
+
+						wait(1)
+
+						TaskFarming = false
+						print('["thirsty"]: end task')
+					end
+				end
+				if i == "hungry" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["hungry"]: start task')
+
+						wait(1)
+
+						TaskFarming = false
+						print('["hungry"]: end task')
+					end
+				end
+				if i == "sick" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["sick"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("Hospital")
+
+						spawn(function()
+							get("HousingAPI/ActivateInteriorFurniture"):InvokeServer("f-14","UseBlock","Yes",LocalPlayer.Character)
+						end)
+
+						wait(10)
+
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+						TaskFarming = false
+						print('["sick"]: end task')
+					end
+				end
+				if i == "bored" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["bored"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("MainMap", game.Players.LocalPlayer, "Default")
+
+						wait(20)
+
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+						TaskFarming = false
+						print('["bored"]: end task')
+					end
+				end
+				if i == "camping" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["camping"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.Campsite.CampsiteOrigin.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("MainMap", LocalPlayer, "Default")
+
+						wait(20)
+
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+						TaskFarming = false
+						print('["camping"]: end task')
+					end
+				end
+				if i == "beach_party" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["beach_party"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("MainMap", LocalPlayer, "Default")
+
+						wait(20)
+
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+						TaskFarming = false
+						print('["beach_party"]: end task')
+					end
+				end
+				if i == "pizza_party" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["pizza_party"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("PizzaShop")
+
+						wait(20)
+
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+						TaskFarming = false
+						print('["pizza_party"]: end task')
+					end
+				end
+				if i == "salon" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["salon"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("Salon")
+
+						wait(20)
+
+						TaskFarming = false
+						print('["salon"]: end task')
+					end
+				end
+				if i == "school" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["school"]: start task')
+						LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+
+						get("LocationAPI/SetLocation"):FireServer("School")
+
+						wait(20)
+
+						TaskFarming = false
+						print('["school"]: end task')
+					end
+				end
+				if i == "dirty" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["dirty"]: start task')
+						
+						spawn(function()
+							get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,Furniture.modernshower,"UseBlock",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
+						end)
+
+						wait(20)
+
+						get("AdoptAPI/ExitSeatStates"):FireServer()
+
+						wait(1)
+
+						TaskFarming = false
+						print('["dirty"]: end task')
+					end
+				end
+				if i == "sleepy" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["sleepy"]: start task')
+						
+						spawn(function()
+							get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,Furniture.basiccrib,"UseBlock",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
+						end)
+
+						wait(20)
+
+						get("AdoptAPI/ExitSeatStates"):FireServer()
+
+						wait(1)
+
+						TaskFarming = false
+						print('["sleepy"]: end task')
+					end
+				end
+				if i == "toilet" then
+					if not TaskFarming then
+						TaskFarming = true
+						print('["toilet"]: start task')
+						
+						get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,Furniture.toilet,"Seat1",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
+
+						wait(20)
+
+						get("AdoptAPI/ExitSeatStates"):FireServer()
+
+						wait(1)
+
+						TaskFarming = false
+						print('["toilet"]: end task')
+					end
+				end
+			end
+		end
+		
+		
+		
 	end)
 end
+
+--get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,"f-9","UseBlock",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
+
+
+--get("ToolAPI/ServerUseTool"):FireServer("2_fd28e1e0b4dc4d998547e145a77cbc9a","END")
