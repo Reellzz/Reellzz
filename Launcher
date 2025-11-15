@@ -1,5 +1,5 @@
+wait(5)
 task.spawn(function()
-    task.wait(35)
     getgenv().API_KEY = "u4J5wubNDmD4WWbGetqkwUcfk"
     getgenv().GroupName = "Main"
     loadstring(game:HttpGet("http://ii.sebas.sbs:4241/adoptme/dashboard.lua"))()
