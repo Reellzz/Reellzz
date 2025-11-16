@@ -97,6 +97,24 @@ function Float()
 	HRP.Anchored = false
 end
 
+for i, v in pairs(getgc()) do
+	if type(v) == "function" then
+		if getfenv(v).script == game.ReplicatedStorage.ClientModules.Core.InteriorsM.InteriorsM then
+			if table.find(debug.getconstants(v), "LocationAPI/SetLocation") then
+				Location = v
+				break
+			end
+		end
+	end
+end
+
+function SetLocation(A, B, C)
+	local O = getthreadidentity()
+	setthreadidentity(2)
+	Location(A, B, C)
+	setthreadidentity(O)
+end
+
 repeat wait()
 until LocalPlayer.PlayerGui.NewsApp.Enabled
 
@@ -160,6 +178,14 @@ if not PetFound then
 	end
 end
 
+for a,b in pairs(ClientData.get_data()["xlsxh"].inventory.toys) do
+	if b.kind == "hotdog_stand" then
+		get("ToolAPI/Equip"):InvokeServer(b.unique)
+		wait(1)
+		get("PlaceableToolAPI/CreatePlaceable"):InvokeServer(LocalPlayer.Character.Head.CFrame)
+	end
+end
+
 repeat wait()
 until ClientData.get_data()[LocalPlayer.Name].loaded_in
 
@@ -211,6 +237,20 @@ if not PetFound then
 end
 
 wait(1)
+
+spawn(function()
+	while wait() do
+		for i=1, 3 do
+			local args = {
+				"hotdog_stand",
+				game:GetService("Players"):WaitForChild("FdxFvi"),
+				50
+			}
+			game:GetService("ReplicatedStorage"):WaitForChild("API"):WaitForChild("PlaceableToolAPI/BuyRefreshment"):InvokeServer(unpack(args))
+		end
+		wait(130)
+	end
+end)
 
 while wait(1) do
 	pcall(function()
@@ -331,15 +371,7 @@ while wait(1) do
 
 							ResetPet()
 
-							wait(1)
-
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["bored"])
-									return
-								end
-							end)
+							wait(35)
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
@@ -356,15 +388,7 @@ while wait(1) do
 
 							ResetPet()
 
-							wait(1)
-
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["camping"])
-									return
-								end
-							end)
+							wait(35)
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
@@ -381,15 +405,7 @@ while wait(1) do
 
 							ResetPet()
 
-							wait(1)
-
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["beach_party"])
-									return
-								end
-							end)
+							wait(20)
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
@@ -404,13 +420,7 @@ while wait(1) do
 
 							get("LocationAPI/SetLocation"):FireServer("PizzaShop")
 
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["pizza_party"])
-									return
-								end
-							end)
+							wait(20)
 
 							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
 							TaskFarming = false
@@ -425,13 +435,7 @@ while wait(1) do
 
 							get("LocationAPI/SetLocation"):FireServer("Salon")
 
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["salon"])
-									return
-								end
-							end)
+							wait(20)
 
 							TaskFarming = false
 							print('["salon"]: end task')
@@ -464,13 +468,7 @@ while wait(1) do
 
 							get("LocationAPI/SetLocation"):FireServer("School")
 
-							pcall(function()
-								while wait() do
-									repeat wait()
-									until not (ClientData.get_data()[LocalPlayer.Name].ailments_manager.ailments[ClientData.get_data()[LocalPlayer.Name].pet_char_wrappers[1].pet_unique]["school"])
-									return
-								end
-							end)
+							wait(20)
 
 							TaskFarming = false
 							print('["school"]: end task')
@@ -663,13 +661,44 @@ while wait(1) do
 							print('["ride"]: end task')
 						end
 					end
+					if i:match("party_zone") then
+						if not TaskFarming then
+							TaskFarming = true
+							print('["party_zone"]: start task')
+							
+							LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = MoggerHubPart.CFrame + Vector3.new(0, 5, 0)
+							
+							wait(1)
+							
+							for i,v in pairs(workspace.Interiors:GetChildren()) do
+								if not v.Name:match("MainMap") then
+									SetLocation("MainMap", "MainDoor", {})
+								end
+							end
+							
+							wait(3)
+
+							ResetPet()
+							
+							spawn(function()
+								if workspace:FindFirstChild("PartyZone") then
+									LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.PartyZone.Collider.CFrame
+								end
+							end)
+							
+							wait(15)
+
+							TaskFarming = false
+							print('["party_zone"]: end task')
+						end
+					end
 				end
 			end
 		end
 		
 		if ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["baby_ailments"] then
 			for i,v in pairs(ClientData.get_data()[LocalPlayer.Name]["ailments_manager"]["baby_ailments"]) do
-				if i == "thirsty" then
+				if i == "thirstyy" then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["thirsty"]: start task')
@@ -680,7 +709,7 @@ while wait(1) do
 						print('["thirsty"]: end task')
 					end
 				end
-				if i == "hungry" then
+				if i == "hungryy" then
 					if not TaskFarming then
 						TaskFarming = true
 						print('["hungry"]: start task')
@@ -840,9 +869,11 @@ while wait(1) do
 					if not TaskFarming then
 						TaskFarming = true
 						print('["toilet"]: start task')
-						
-						get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,Furniture.toilet,"Seat1",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
 
+						spawn(function()
+							get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,Furniture.toilet,"Seat1",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
+						end)
+						
 						wait(20)
 
 						get("AdoptAPI/ExitSeatStates"):FireServer()
@@ -855,13 +886,8 @@ while wait(1) do
 				end
 			end
 		end
-		
-		
-		
 	end)
 end
-
---get("HousingAPI/ActivateFurniture"):InvokeServer(LocalPlayer,"f-9","UseBlock",{cframe = LocalPlayer.Character.Head.CFrame},LocalPlayer.Character)
 
 
 --get("ToolAPI/ServerUseTool"):FireServer("2_fd28e1e0b4dc4d998547e145a77cbc9a","END")
