@@ -178,7 +178,7 @@ if not PetFound then
 	end
 end
 
-for a,b in pairs(ClientData.get_data()["xlsxh"].inventory.toys) do
+for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.toys) do
 	if b.kind == "hotdog_stand" then
 		get("ToolAPI/Equip"):InvokeServer(b.unique)
 		wait(1)
