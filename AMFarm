@@ -180,9 +180,9 @@ end
 
 for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.toys) do
 	if b.kind == "hotdog_stand" then
-		get("ToolAPI/Equip"):InvokeServer(b.unique)
+		--get("ToolAPI/Equip"):InvokeServer(b.unique)
 		wait(1)
-		get("PlaceableToolAPI/CreatePlaceable"):InvokeServer(LocalPlayer.Character.Head.CFrame)
+		--get("PlaceableToolAPI/CreatePlaceable"):InvokeServer(LocalPlayer.Character.Head.CFrame)
 	end
 end
 
