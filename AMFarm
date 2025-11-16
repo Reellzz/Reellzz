@@ -246,7 +246,7 @@ spawn(function()
 				game:GetService("Players"):WaitForChild("FdxFvi"),
 				50
 			}
-			game:GetService("ReplicatedStorage"):WaitForChild("API"):WaitForChild("PlaceableToolAPI/BuyRefreshment"):InvokeServer(unpack(args))
+			get("PlaceableToolAPI/BuyRefreshment"):InvokeServer(unpack(args))
 		end
 		wait(130)
 	end
