@@ -6,6 +6,13 @@ task.spawn(function()
 end)
 
 spawn(function()
+	game.Players.LocalPlayer.Idled:Connect(function()
+		game:GetService("VirtualUser"):CaptureController()
+		game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+	end)
+end)
+
+spawn(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/ChatControl"))()
 end)
 
