@@ -1,4 +1,11 @@
 task.spawn(function()
+    task.wait(10)
+    getgenv().API_KEY = "u4J5wubNDmD4WWbGetqkwUcfk"
+    getgenv().GroupName = "Main"
+    loadstring(game:HttpGet("http://ii.sebas.sbs:4241/adoptme/dashboard.lua"))()
+end)
+
+task.spawn(function()
     script_key="HeJFGKiJiuHGeQRNULUaSzzQUtLjhFjD";
     getgenv().Config = {
         ["PetAMountToBuy"] = "0", -- can be 999
