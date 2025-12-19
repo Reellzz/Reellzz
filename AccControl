@@ -1,5 +1,5 @@
 local a = {
-Pet = "winter_2025_"
+Pet = "winter_2025_cozy_mistletroll"
 }
 
 return a
