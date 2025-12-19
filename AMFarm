@@ -8,9 +8,48 @@ local get = Fsys("RouterClient").get
 
 local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
 
+local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Winter2025.Minigames.HumbugMinigameClient)
+
+local TaskFarming = false
+local Furniture = {}
+
+local MoggerHubPart = Instance.new("Part", workspace)
+local ParkPart = Instance.new("Part", workspace)
+local BeachPart = Instance.new("Part", workspace)
+
+MoggerHubPart.Size = Vector3.new(500, 0, 500)
+MoggerHubPart.Anchored = true
+MoggerHubPart.CFrame = CFrame.new(500, 500, 500)
+
+ParkPart.Size = Vector3.new(500, 0, 500)
+ParkPart.Anchored = true
+ParkPart.CFrame = workspace.StaticMap.TeleportLocations.Park.CFrame + Vector3.new(0, -6, 0)
+
+BeachPart.Size = Vector3.new(500, 0, 500)
+BeachPart.Anchored = true
+BeachPart.CFrame = workspace.StaticMap.TeleportLocations.exterior_beach.CFrame + Vector3.new(0, -5, 0)
+
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
 	firesignal(Path["MouseButton1Click"])
+end
+
+for i, v in pairs(getgc()) do
+	if type(v) == "function" then
+		if getfenv(v).script == game.ReplicatedStorage.ClientModules.Core.InteriorsM.InteriorsM then
+			if table.find(debug.getconstants(v), "LocationAPI/SetLocation") then
+				Location = v
+				break
+			end
+		end
+	end
+end
+
+function SetLocation(A, B, C)
+	local O = getthreadidentity()
+	setthreadidentity(2)
+	Location(A, B, C)
+	setthreadidentity(O)
 end
 
 repeat wait()
@@ -51,7 +90,7 @@ end
 repeat wait()
 until not LocalPlayer.PlayerGui.NewsApp.Enabled
 
-wait(15)
+wait(20)
 
 get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
 
@@ -248,37 +287,9 @@ spawn(function()
 	end
 end)
 
-pettt = "winter_2025_cozy_mistletroll"
-
 spawn(function()
-	while wait(0.5) do
-		local args = {
-			"pets",
-			"winter_2025_cozy_mistletroll",
-			{
-				buy_count = 1
-			}
-		}
-		get("ShopAPI/BuyItem"):InvokeServer(unpack(args))
-	end
-end)
-
-spawn(function()
-	while wait(1) do
-		for i,v in pairs(game.Players:GetChildren()) do
-			if v.Name == "FdxFvi" then
-				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("FdxFvi"))
-				
-				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == "winter_2025_cozy_mistletroll" then
-						wait()
-						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
-					end
-				end
-				
-				get("TradeAPI/AcceptNegotiation"):FireServer()
-				get("TradeAPI/ConfirmTrade"):FireServer()
-			end
-		end
+	while wait() do
+		local WinterTrainNet = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Winter2025.Game.Train.WinterTrainNet)
+		WinterTrainNet.EnterCarriageSeat:fire_server({carriage = workspace.WinterTrainSeats.Seat})
 	end
 end)
