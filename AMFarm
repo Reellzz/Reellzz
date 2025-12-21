@@ -244,7 +244,7 @@ spawn(function()
 		end
 
 		IceSkatingNet.RedeemPendingGingerbread:fire_server()
-		wait(30)
+		wait(60)
 	end
 end)
 
@@ -253,13 +253,6 @@ spawn(function()
 		if ClientData.get_data()[LocalPlayer.Name].money >= 550 then
 			get("WinterEventAPI/UseExchangeKiosk"):InvokeServer()
 		end
-	end
-end)
-
-spawn(function()
-	while wait() do
-		local WinterTrainNet = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Winter2025.Game.Train.WinterTrainNet)
-		WinterTrainNet.EnterCarriageSeat:fire_server({carriage = workspace.WinterTrainSeats.Seat})
 	end
 end)
 
