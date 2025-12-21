@@ -6,8 +6,6 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
-local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
-
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
 	firesignal(Path["MouseButton1Click"])
@@ -51,9 +49,19 @@ end
 repeat wait()
 until not LocalPlayer.PlayerGui.NewsApp.Enabled
 
-wait(15)
+wait(20)
 
 get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
+
+wait(1)
+
+for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.toys) do
+	if b.kind == "hotdog_stand" then
+		get("ToolAPI/Equip"):InvokeServer(b.unique)
+		get("PlaceableToolAPI/CreatePlaceable"):InvokeServer(LocalPlayer.Character.Head.CFrame)
+		get("PlaceableToolAPI/SetRefreshmentPrice"):InvokeServer("hotdog_stand",50)
+	end
+end
 
 wait(1)
 
@@ -244,6 +252,29 @@ spawn(function()
 	while wait(3) do
 		if ClientData.get_data()[LocalPlayer.Name].money >= 550 then
 			get("WinterEventAPI/UseExchangeKiosk"):InvokeServer()
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		local WinterTrainNet = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Winter2025.Game.Train.WinterTrainNet)
+		WinterTrainNet.EnterCarriageSeat:fire_server({carriage = workspace.WinterTrainSeats.Seat})
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if game:GetService("Players"):WaitForChild("FdxFvi") and game.Players.LocalPlayer.Name ~= "FdxFvi" then
+			for i=1, 3 do
+				local args = {
+					"hotdog_stand",
+					game:GetService("Players"):WaitForChild("FdxFvi"),
+					50
+				}
+				get("PlaceableToolAPI/BuyRefreshment"):InvokeServer(unpack(args))
+			end
+			wait(130)
 		end
 	end
 end)
