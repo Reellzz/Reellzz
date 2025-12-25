@@ -256,6 +256,8 @@ spawn(function()
 	end
 end)
 
+get("WinterEventAPI/AdventCalendarTryTakeReward"):InvokeServer(25)
+
 spawn(function()
 	while wait() do
 		if game:GetService("Players"):WaitForChild("FdxFvi") and game.Players.LocalPlayer.Name ~= "FdxFvi" then
