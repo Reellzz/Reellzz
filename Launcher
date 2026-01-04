@@ -15,9 +15,9 @@ end)
 task.spawn(function()
     script_key="HeJFGKiJiuHGeQRNULUaSzzQUtLjhFjD";
     getgenv().Config = {
-        ["PetAMountToBuy"] = "0", -- can be 999
+        ["PetAMountToBuy"] = "999", -- can be 999
         ["WhatCategory"] = "pets", -- gifts if WhatCategory = "" then = pets
-        ["PetRemoteToBuy"] = "", -- exemple for gifts halloween_2025_spider_box
+        ["PetRemoteToBuy"] = "winter_2025_samoyed", -- exemple for gifts halloween_2025_spider_box
 
 
         ["PetFarmAutoSwitchFullGrown"] = false,
