@@ -14,41 +14,52 @@ end)
 
 task.spawn(function()
     script_key="HeJFGKiJiuHGeQRNULUaSzzQUtLjhFjD";
-    getgenv().Config = {
-        ["PetAMountToBuy"] = "0", -- can be 999
-        ["WhatCategory"] = "pets", -- gifts if WhatCategory = "" then = pets
-        ["PetRemoteToBuy"] = "", -- exemple for gifts halloween_2025_spider_box
+   getgenv().Config = {
+    ["PetAMountToBuy"] = "0", -- can be 999
+    ["WhatCategory"] = "pets", -- gifts if WhatCategory = "" then = pets
+    ["PetRemoteToBuy"] = "Aztec Egg", -- exemple for gifts halloween_2025_spider_box
+
+    ["check_for_2d_kitty"] = true, -- farm 2d kitty event work with eggfarm or petfarm
 
 
-        ["PetFarmAutoSwitchFullGrown"] = false,
-        ["PetFarmActive"] = true,
-		["check_for_2d_kitty"] = true,
+    ["PetFarmAutoSwitchFullGrown"] = false,
+    ["PetFarmActive"] = true, -- farm potion
 
 
-        ["EggFarmActive"] = false, -- farm egg, if no more eggs will farm potion, if found new egg will farm them to
-        ["EggToIgnore"] = {""}, -- eggs to ignore when eggfarm active
-        ["LoopBuyEgg"] = false, -- when enough bucks will buy egg, only work with eggfarm
-        ["EggToBuyEgg"] = "",
+    ["EggFarmActive"] = false, -- farm egg, if no more eggs will farm potion, if found new egg will farm them to
+    ["EggToIgnore"] = {""}, -- eggs to ignore when eggfarm active
+    ["LoopBuyEgg"] = false, -- when enough bucks will buy egg, only work with eggfarm
+    ["EggToBuyEgg"] = "aztec_egg_2025_aztec_egg",
 
 
-        ["NeonMegaFarm"] = false,
-        ["BuyEgg"] = "", -- only work with NeonMegaFarm, will loop buy this egg when enough bucks
-        
+    ["HodDogStandHOLDER"] = "", -- will automatically setup hotdog stand you must own one
+    ["HodDogStandHOLDERPrice"] = "50", -- 1 to 50 max if not set default is 50
+    ["HodDogStandTransfer"] = false, -- enable or disable hotdog stand transfer
 
-        ["AutoReleasePet"] = false, -- work with egg/pet farm, will release selected rarity
-        ["RecycleWebhook"] = "",
-        ["common"] = false,
-        ["uncommon"] = false,
-        ["rare"] = false,
-        ["ultra_rare"] = false,
+    
+    ["NeonMegaFarm"] = false,
+    ["BuyEgg"] = "aztec_egg_2025_aztec_egg", -- only work with NeonMegaFarm, will loop buy this egg when enough bucks
+    
 
-        ["HideUselessGui"] = true,
-        ["Blur_username"] = true,
-        ["Blazing_Lion_Log"] = false,
-        ["DiscordId"] = "123456",
-        ["Webhook"] = "",
-        ["LegendaryWebhook"] = "",
-        ["NeonMegaWebhook"] = "",
-    }
+    ["AutoReleasePet"] = false, -- work with egg/pet farm, will release selected rarity
+    ["GlobalBlacklist"] = {""}, -- item kind or name separated by , ; |
+    ["LegendaryAllowedToRecycle"] = {""}, -- item kind or name separated by , ; |
+    ["RecycleWebhook"] = "", -- webhook to send recycle info
+    ["RecycleOnlyPetWithAge"] = "6", -- 6 = full grown, let "" to recycle all
+
+    ["common"] = false,
+    ["uncommon"] = false,
+    ["rare"] = false,
+    ["ultra_rare"] = false,
+    ["legendary"] = false, -- WARNING must know what you are doing
+
+    ["HideUselessGui"] = false,
+    ["Blur_username"] = false,
+    ["Blazing_Lion_Log"] = false,
+    ["DiscordId"] = "123456",
+    ["Webhook"] = "",
+    ["LegendaryWebhook"] = "",
+    ["NeonMegaWebhook"] = "",
+}
     loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/66567bfd337b57eb059b58dbe1badb89.lua"))()
 end)
