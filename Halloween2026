@@ -6,6 +6,24 @@ local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
 
+function SetLocation(A, B, C)
+	local O = getthreadidentity()
+	setthreadidentity(2)
+	Location(A, B, C)
+	setthreadidentity(O)
+end
+
+for i, v in pairs(getgc()) do
+	if type(v) == "function" then
+		if getfenv(v).script == game.ReplicatedStorage.ClientModules.Core.InteriorsM.InteriorsM then
+			if table.find(debug.getconstants(v), "LocationAPI/SetLocation") then
+				Location = v
+				break
+			end
+		end
+	end
+end
+
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
 	firesignal(Path["MouseButton1Click"])
@@ -48,11 +66,20 @@ end
 repeat wait()
 until not LocalPlayer.PlayerGui.NewsApp.Enabled
 
-wait(20)
+wait(10)
 
-get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
-
-wait(1)
+local teleportPart = workspace.StaticMap.TeleportLocations.ghost_clusters
+local platform = Instance.new("Part")
+platform.Name = "GhostClustersPlatform"
+platform.Size = Vector3.new(50, 1, 50)
+platform.Position = teleportPart.Position + Vector3.new(0, -5, 0)
+platform.Anchored = true
+platform.CanCollide = true
+platform.CanTouch = true
+platform.CanQuery = true
+platform.Transparency = 0
+platform.Material = Enum.Material.SmoothPlastic
+platform.Parent = workspace
 
 get("TeamAPI/Spawn"):InvokeServer()
 
@@ -62,15 +89,25 @@ until workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name)
 wait(2)
 
 spawn(function()
-	while wait(1) do
-		local args = {
-			[1] = "ghost_clusters",
-			[2] = true
-		}
-
-		game:GetService("ReplicatedStorage"):WaitForChild("API"):WaitForChild("MinigameAPI/AttemptJoin"):FireServer(unpack(args))
+	if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
+		SetLocation("HauntedManor", "MainDoor", {})
 	end
 end)
+
+LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+
+wait(2)
+
+LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+
+if workspace.Interiors:FindFirstChild("HauntedManor") then
+	LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Interiors.HauntedManor.GhostClustersMinigameJoinZone.Ring.CFrame
+else
+	if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
+		SetLocation("HauntedManor", "MainDoor", {})
+	end
+	LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+end
 
 local Fsys = require(game.ReplicatedStorage.Fsys)
 local load = Fsys.load
@@ -85,40 +122,54 @@ local m = load("MinigameClientManager").get(
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local root = character:WaitForChild("HumanoidRootPart")
 
+local a = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
+
 spawn(function()
 	while wait(1) do
 		spawn(function()
-			if workspace:FindFirstChild("GhostClustersVisuals") then
-				for i, v in pairs(workspace:FindFirstChild("GhostClustersVisuals"):GetChildren()) do
-					local ghost_id =
-						v.Name:match("^Ghost_Large_(.+)")
-						or v.Name:match("^Ghost_Small_(.+)")
-						or v.Name:match("^Ghost_Medium_(.+)")
+			if a.is_participating then
+				if workspace:FindFirstChild("GhostClustersVisuals") then
+					for i, v in pairs(workspace:FindFirstChild("GhostClustersVisuals"):GetChildren()) do
+						local ghost_id =
+							v.Name:match("^Ghost_Large_(.+)")
+							or v.Name:match("^Ghost_Small_(.+)")
+							or v.Name:match("^Ghost_Medium_(.+)")
 
-					if ghost_id then
-						local target = v:FindFirstChild("RootPart", true)
+						if ghost_id then
+							local target = v:FindFirstChild("RootPart", true)
 
-						if target and target:IsA("BasePart") then
-							local distance = (root.Position - target.Position).Magnitude
+							if target and target:IsA("BasePart") then
+								local distance = (root.Position - target.Position).Magnitude
 
-							if distance > 12 then
-								root.CFrame = target.CFrame
+								if distance > 12 then
+									root.CFrame = target.CFrame
+								end
 							end
-						end
 
-						local args = {
-							[1] = m.instanced_minigame.minigame_id,
-							[2] = "start_contribute",
-							[3] = {
-								["ghost_id"] = ghost_id,
-								["use_token"] = "SnusVille"
+							local args = {
+								[1] = m.instanced_minigame.minigame_id,
+								[2] = "start_contribute",
+								[3] = {
+									["ghost_id"] = ghost_id,
+									["use_token"] = "SnusVille"
+								}
 							}
-						}
 
-						get("MinigameAPI/MessageServer"):FireServer(unpack(args))
+							get("MinigameAPI/MessageServer"):FireServer(unpack(args))
+						end
 					end
 				end
 			end
 		end)
 	end
 end)
+
+spawn(function()
+	LocalPlayer.Idled:Connect(function()
+		local VirtualUser = game:GetService("VirtualUser")
+		VirtualUser:CaptureController()
+		VirtualUser:ClickButton2(Vector2.new())
+	end)
+end)
+
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/Launcher2026"))()
