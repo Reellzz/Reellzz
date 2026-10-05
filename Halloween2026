@@ -101,14 +101,18 @@ wait(2)
 
 LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 
-if workspace.Interiors:FindFirstChild("HauntedManor") then
-	LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Interiors:WaitforChild("HauntedManor"):WaitforChild("GhostClustersMinigameJoinZone"):WaitforChild("Ring").CFrame
-else
-	if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
-		SetLocation("HauntedManor", "MainDoor", {})
+spawn(function()
+	if workspace.Interiors:FindFirstChild("HauntedManor") then
+		LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Interiors:WaitForChild("HauntedManor"):WaitForChild("GhostClustersMinigameJoinZone"):WaitForChild("Ring").CFrame
+	else
+		if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
+			SetLocation("HauntedManor", "MainDoor", {})
+		end
+		LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 	end
-	LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
-end
+end)
+
+LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 
 local Fsys = require(game.ReplicatedStorage.Fsys)
 local load = Fsys.load
