@@ -1,0 +1,124 @@
+repeat wait()
+until not game.Players.LocalPlayer.PlayerGui.AssetLoadUI.Enabled
+
+local LocalPlayer = game.Players.LocalPlayer
+local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
+local ClientData = Fsys("ClientData")
+local get = Fsys("RouterClient").get
+
+function ButtonClick(Path)
+	firesignal(Path["MouseButton1Down"])
+	firesignal(Path["MouseButton1Click"])
+end
+
+repeat wait()
+until LocalPlayer.PlayerGui.NewsApp.Enabled
+
+get("SettingsAPI/SetSetting"):FireServer("theme_color","black")
+get("SettingsAPI/SetSetting"):FireServer("spawn_location",1)
+get("SettingsAPI/SetSetting"):FireServer("show_spawn_location_dialog",false)
+get("SettingsAPI/SetBooleanFlag"):FireServer("arachnophobia_mode_seen", true)
+get("PayAPI/DisablePopups"):FireServer()
+
+ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Buttons.PlayButton)
+
+spawn(function()
+	while wait() do
+		if LocalPlayer.PlayerGui.DialogApp.Dialog.DailyDiscountsDialog.Visible then
+			ButtonClick(LocalPlayer.PlayerGui.DialogApp.Dialog.ExitButton)
+		end
+	end
+end)
+
+if not ClientData.get_data()[LocalPlayer.Name]["ftue_2022_starter_pack_manager"].starter_pack_timestamp then
+	spawn(function()
+		repeat wait()
+		until LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible
+
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
+		LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.Visible = false
+		ButtonClick(LocalPlayer.PlayerGui.FTUEStarterPackApp.Popups.Default.ExitButton)
+	end)
+	print("Closed ftue")
+end
+
+repeat wait()
+until not LocalPlayer.PlayerGui.NewsApp.Enabled
+
+wait(20)
+
+get("TeamAPI/ChooseTeam"):InvokeServer("Babies",{dont_respawn = true})
+
+wait(1)
+
+get("TeamAPI/Spawn"):InvokeServer()
+
+repeat wait()
+until workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name)
+
+wait(2)
+
+spawn(function()
+	while wait(1) do
+		local args = {
+			[1] = "ghost_clusters",
+			[2] = true
+		}
+
+		game:GetService("ReplicatedStorage"):WaitForChild("API"):WaitForChild("MinigameAPI/AttemptJoin"):FireServer(unpack(args))
+	end
+end)
+
+local Fsys = require(game.ReplicatedStorage.Fsys)
+local load = Fsys.load
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local m = load("MinigameClientManager").get(
+	load("GhostClustersConstants").MINIGAME_ID
+)
+
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local root = character:WaitForChild("HumanoidRootPart")
+
+spawn(function()
+	while wait(1) do
+		spawn(function()
+			if workspace:FindFirstChild("GhostClustersVisuals") then
+				for i, v in pairs(workspace:FindFirstChild("GhostClustersVisuals"):GetChildren()) do
+					local ghost_id =
+						v.Name:match("^Ghost_Large_(.+)")
+						or v.Name:match("^Ghost_Small_(.+)")
+						or v.Name:match("^Ghost_Medium_(.+)")
+
+					if ghost_id then
+						local target = v:FindFirstChild("RootPart", true)
+
+						if target and target:IsA("BasePart") then
+							local distance = (root.Position - target.Position).Magnitude
+
+							if distance > 12 then
+								root.CFrame = target.CFrame
+							end
+						end
+
+						local args = {
+							[1] = m.instanced_minigame.minigame_id,
+							[2] = "start_contribute",
+							[3] = {
+								["ghost_id"] = ghost_id,
+								["use_token"] = "SnusVille"
+							}
+						}
+
+						get("MinigameAPI/MessageServer"):FireServer(unpack(args))
+					end
+				end
+			end
+		end)
+	end
+end)
