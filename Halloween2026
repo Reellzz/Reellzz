@@ -5,6 +5,9 @@ local LocalPlayer = game.Players.LocalPlayer
 local Fsys = require(game.ReplicatedStorage:FindFirstChild("Fsys")).load
 local ClientData = Fsys("ClientData")
 local get = Fsys("RouterClient").get
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 
 function SetLocation(A, B, C)
 	local O = getthreadidentity()
@@ -37,6 +40,10 @@ get("SettingsAPI/SetSetting"):FireServer("spawn_location",1)
 get("SettingsAPI/SetSetting"):FireServer("show_spawn_location_dialog",false)
 get("SettingsAPI/SetBooleanFlag"):FireServer("arachnophobia_mode_seen", true)
 get("PayAPI/DisablePopups"):FireServer()
+get("SettingsAPI/SetSetting"):FireServer("player_names_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("friendship_bar_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("char_icons",false)
+get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
 
 ButtonClick(LocalPlayer.PlayerGui.NewsApp.EnclosingFrame.MainFrame.Buttons.PlayButton)
 
@@ -77,7 +84,7 @@ platform.Anchored = true
 platform.CanCollide = true
 platform.CanTouch = true
 platform.CanQuery = true
-platform.Transparency = 0
+platform.Transparency = 0.5
 platform.Material = Enum.Material.SmoothPlastic
 platform.Parent = workspace
 
@@ -116,9 +123,6 @@ LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLoca
 
 local Fsys=require(game.ReplicatedStorage.Fsys)
 local load=Fsys.load
-local Players=game:GetService("Players")
-local ReplicatedStorage=game:GetService("ReplicatedStorage")
-local LocalPlayer=Players.LocalPlayer
 
 local m=load("MinigameClientManager").get(load("GhostClustersConstants").MINIGAME_ID)
 local a=require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
@@ -132,8 +136,9 @@ local Remote = ReplicatedStorage:WaitForChild("API"):WaitForChild("MinigameAPI/M
 
 spawn(function()
 	while wait() do
-		if not a.is_participating then continue end
+		get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
 
+		if not a.is_participating then continue end
 		local visuals = workspace:FindFirstChild("GhostClustersVisuals")
 		local hasFreeGhosts = false
 
@@ -146,20 +151,13 @@ spawn(function()
 
 				if ghost_id then
 					hasFreeGhosts = true
-
 					local target = v:FindFirstChild("RootPart", true)
 					if target and target:IsA("BasePart") then
 						root.CFrame = target.CFrame
-						Remote:FireServer(
-							m.instanced_minigame.minigame_id,
-							"start_contribute",
-							{
-								["ghost_id"] = ghost_id,
-								["use_token"] = "SnusVille"
-							}
-						)
+						Remote:FireServer(m.instanced_minigame.minigame_id,"start_contribute",{["ghost_id"] = ghost_id,["use_token"] = "SnusVille"})
 					end
 				end
+
 			end
 		end
 
@@ -171,18 +169,12 @@ spawn(function()
 					local teleportPart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
 					if teleportPart then
 						root.CFrame = teleportPart.CFrame
-						Remote:FireServer(
-							m.instanced_minigame.minigame_id,
-							"start_prop_contribute",
-							{
-								["unique"] = unique,
-								["use_token"] = "SnusVille"
-							}
-						)
+						Remote:FireServer(m.instanced_minigame.minigame_id,"start_prop_contribute",{["unique"] = unique,["use_token"] = "SnusVille"})
 					end
 				end
 			end
 		end
+
 	end
 end)
 
@@ -192,6 +184,133 @@ spawn(function()
 		VirtualUser:CaptureController()
 		VirtualUser:ClickButton2(Vector2.new())
 	end)
+end)
+
+spawn(function()
+	while wait(5) do
+		if workspace.Interiors:FindFirstChild("HauntedManor") then
+			if workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual") then
+				workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual"):Destroy()
+				workspace.Interiors.HauntedManor.Pedestals:Destroy()
+				workspace.Interiors.HauntedManor.Mannequins:Destroy()
+				workspace.Interiors.HauntedManor.PedestalItems:Destroy()
+				workspace.Interiors.HauntedManor.ShopItems:Destroy()
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait(5) do
+		if not a.is_participating then
+
+			local CryptConstants = require(
+				ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
+			)
+
+			local EquipTool = ReplicatedStorage.API:WaitForChild("ToolAPI/Equip")
+
+			for _, toy in pairs(ClientData.get("inventory").toys) do
+				if toy.kind == CryptConstants.KEY_ITEM_KIND then
+					EquipTool:InvokeServer(toy.unique)
+					break
+				end
+			end
+			
+			get("LocationAPI/SetLocation"):FireServer("TheCrypt")
+
+			local ClientData = require(ReplicatedStorage.Fsys).load("ClientData")
+
+			local CryptConstants = require(
+				ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
+			)
+
+			local UnlockPadlock = ReplicatedStorage.adoptme_new_net:WaitForChild(
+				"Halloween2026/UnlockPadlock"
+			)
+
+			local CryptData = ClientData.get(CryptConstants.STORE_KEY)
+
+			if not CryptData or not CryptData.floors then
+				warn("Impossible de récupérer les données de The Crypt.")
+				return
+			end
+
+			local ginormousCandyCoffins = {}
+			local otherRewardCoffins = {}
+
+			for floorIndex, floorData in pairs(CryptData.floors) do
+				for coffinIndex, rewardId in pairs(floorData.coffins) do
+
+					local rewardData = floorData.rewards
+						and floorData.rewards[rewardId]
+
+					local rewardIdText = tostring(rewardId):lower()
+
+					local rewardKindText = rewardData
+						and tostring(rewardData.kind):lower()
+						or ""
+
+					local isLadder = rewardId == "ladder"
+
+					local isCandy =
+						rewardIdText:find("candy", 1, true)
+						or rewardKindText:find("candy", 1, true)
+
+					local isGinormousCandy =
+						rewardIdText:find("ginormous", 1, true)
+						or rewardKindText:find("ginormous", 1, true)
+
+					if isGinormousCandy then
+						table.insert(ginormousCandyCoffins, {
+							floorIndex = floorIndex,
+							coffinIndex = coffinIndex,
+							rewardId = rewardId
+						})
+					elseif isLadder or isCandy then
+						table.insert(otherRewardCoffins, {
+							floorIndex = floorIndex,
+							coffinIndex = coffinIndex,
+							rewardId = rewardId
+						})
+					end
+				end
+			end
+
+			local function openCoffin(coffinData)
+				print(
+					"Ouverture : étage",
+					coffinData.floorIndex,
+					"tombe",
+					coffinData.coffinIndex,
+					coffinData.rewardId
+				)
+
+				local success, result = pcall(function()
+					return UnlockPadlock:InvokeServer({
+						floor_index = coffinData.floorIndex,
+						padlock_index = coffinData.coffinIndex
+					})
+				end)
+
+				if not success then
+					warn("Erreur :", result)
+				end
+
+				task.wait(0.1)
+			end
+
+			for _, coffinData in ipairs(ginormousCandyCoffins) do
+				openCoffin(coffinData)
+			end
+
+			for _, coffinData in ipairs(otherRewardCoffins) do
+				openCoffin(coffinData)
+			end
+
+			game:GetService("ReplicatedStorage"):WaitForChild("adoptme_new_net"):WaitForChild("Halloween2026/ClaimTombSpider"):InvokeServer()
+		end
+	end
 end)
 
 -- loadstring(game:HttpGet("https://raw.githubusercontent.com/Reellzz/Reellzz/refs/heads/main/Launcher2026"))()
