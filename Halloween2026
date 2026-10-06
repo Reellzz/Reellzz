@@ -200,7 +200,7 @@ spawn(function()
 	while wait(5) do
 		if workspace.Interiors:FindFirstChild("HauntedManor") then
 			if workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual") then
-				workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual"):Destroy()
+				--workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual"):Destroy()
 				workspace.Interiors.HauntedManor.Pedestals:Destroy()
 				workspace.Interiors.HauntedManor.Mannequins:Destroy()
 				workspace.Interiors.HauntedManor.PedestalItems:Destroy()
