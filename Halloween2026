@@ -114,58 +114,75 @@ end)
 
 LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 
-local Fsys = require(game.ReplicatedStorage.Fsys)
-local load = Fsys.load
+local Fsys=require(game.ReplicatedStorage.Fsys)
+local load=Fsys.load
+local Players=game:GetService("Players")
+local ReplicatedStorage=game:GetService("ReplicatedStorage")
+local LocalPlayer=Players.LocalPlayer
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local m = load("MinigameClientManager").get(
-	load("GhostClustersConstants").MINIGAME_ID
-)
+local m=load("MinigameClientManager").get(load("GhostClustersConstants").MINIGAME_ID)
+local a=require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
 
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local root = character:WaitForChild("HumanoidRootPart")
 
-local a = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
+local GhostClustersPropRenderer = require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.GhostClusters.GhostClustersPropRenderer)
+
+local Remote = ReplicatedStorage:WaitForChild("API"):WaitForChild("MinigameAPI/MessageServer")
 
 spawn(function()
-	while wait(1) do
-		spawn(function()
-			if a.is_participating then
-				if workspace:FindFirstChild("GhostClustersVisuals") then
-					for i, v in pairs(workspace:FindFirstChild("GhostClustersVisuals"):GetChildren()) do
-						local ghost_id =
-							v.Name:match("^Ghost_Large_(.+)")
-							or v.Name:match("^Ghost_Small_(.+)")
-							or v.Name:match("^Ghost_Medium_(.+)")
+	while wait() do
+		if not a.is_participating then continue end
 
-						if ghost_id then
-							local target = v:FindFirstChild("RootPart", true)
+		local visuals = workspace:FindFirstChild("GhostClustersVisuals")
+		local hasFreeGhosts = false
 
-							if target and target:IsA("BasePart") then
-								local distance = (root.Position - target.Position).Magnitude
+		if visuals then
+			for _, v in pairs(visuals:GetChildren()) do
+				local ghost_id =
+					v.Name:match("^Ghost_Large_(.+)")
+					or v.Name:match("^Ghost_Small_(.+)")
+					or v.Name:match("^Ghost_Medium_(.+)")
 
-								if distance > 12 then
-									root.CFrame = target.CFrame
-								end
-							end
+				if ghost_id then
+					hasFreeGhosts = true
 
-							local args = {
-								[1] = m.instanced_minigame.minigame_id,
-								[2] = "start_contribute",
-								[3] = {
-									["ghost_id"] = ghost_id,
-									["use_token"] = "SnusVille"
-								}
+					local target = v:FindFirstChild("RootPart", true)
+					if target and target:IsA("BasePart") then
+						root.CFrame = target.CFrame
+						Remote:FireServer(
+							m.instanced_minigame.minigame_id,
+							"start_contribute",
+							{
+								["ghost_id"] = ghost_id,
+								["use_token"] = "SnusVille"
 							}
-
-							get("MinigameAPI/MessageServer"):FireServer(unpack(args))
-						end
+						)
 					end
 				end
 			end
-		end)
+		end
+
+		if not hasFreeGhosts then
+			for _, target in GhostClustersPropRenderer.get_targets(true) do
+				local unique = target.unique
+				local model = target.model
+				if unique and model then
+					local teleportPart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
+					if teleportPart then
+						root.CFrame = teleportPart.CFrame
+						Remote:FireServer(
+							m.instanced_minigame.minigame_id,
+							"start_prop_contribute",
+							{
+								["unique"] = unique,
+								["use_token"] = "SnusVille"
+							}
+						)
+					end
+				end
+			end
+		end
 	end
 end)
 
