@@ -203,112 +203,113 @@ end)
 spawn(function()
 	while wait(5) do
 		if not a.is_participating then
-
-			local CryptConstants = require(
-				ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
-			)
-
-			local EquipTool = ReplicatedStorage.API:WaitForChild("ToolAPI/Equip")
-
-			for _, toy in pairs(ClientData.get("inventory").toys) do
-				if toy.kind == CryptConstants.KEY_ITEM_KIND then
-					EquipTool:InvokeServer(toy.unique)
-					break
-				end
-			end
-			
-			get("LocationAPI/SetLocation"):FireServer("TheCrypt")
-
-			local ClientData = require(ReplicatedStorage.Fsys).load("ClientData")
-
-			local CryptConstants = require(
-				ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
-			)
-
-			local UnlockPadlock = ReplicatedStorage.adoptme_new_net:WaitForChild(
-				"Halloween2026/UnlockPadlock"
-			)
-
-			local CryptData = ClientData.get(CryptConstants.STORE_KEY)
-
-			if not CryptData or not CryptData.floors then
-				warn("Impossible de récupérer les données de The Crypt.")
-				return
-			end
-
-			local ginormousCandyCoffins = {}
-			local otherRewardCoffins = {}
-
-			for floorIndex, floorData in pairs(CryptData.floors) do
-				for coffinIndex, rewardId in pairs(floorData.coffins) do
-
-					local rewardData = floorData.rewards
-						and floorData.rewards[rewardId]
-
-					local rewardIdText = tostring(rewardId):lower()
-
-					local rewardKindText = rewardData
-						and tostring(rewardData.kind):lower()
-						or ""
-
-					local isLadder = rewardId == "ladder"
-
-					local isCandy =
-						rewardIdText:find("candy", 1, true)
-						or rewardKindText:find("candy", 1, true)
-
-					local isGinormousCandy =
-						rewardIdText:find("ginormous", 1, true)
-						or rewardKindText:find("ginormous", 1, true)
-
-					if isGinormousCandy then
-						table.insert(ginormousCandyCoffins, {
-							floorIndex = floorIndex,
-							coffinIndex = coffinIndex,
-							rewardId = rewardId
-						})
-					elseif isLadder or isCandy then
-						table.insert(otherRewardCoffins, {
-							floorIndex = floorIndex,
-							coffinIndex = coffinIndex,
-							rewardId = rewardId
-						})
-					end
-				end
-			end
-
-			local function openCoffin(coffinData)
-				print(
-					"Ouverture : étage",
-					coffinData.floorIndex,
-					"tombe",
-					coffinData.coffinIndex,
-					coffinData.rewardId
+			spawn(function()
+				local CryptConstants = require(
+					ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
 				)
 
-				local success, result = pcall(function()
-					return UnlockPadlock:InvokeServer({
-						floor_index = coffinData.floorIndex,
-						padlock_index = coffinData.coffinIndex
-					})
-				end)
+				local EquipTool = ReplicatedStorage.API:WaitForChild("ToolAPI/Equip")
 
-				if not success then
-					warn("Erreur :", result)
+				for _, toy in pairs(ClientData.get("inventory").toys) do
+					if toy.kind == CryptConstants.KEY_ITEM_KIND then
+						EquipTool:InvokeServer(toy.unique)
+						break
+					end
 				end
 
-				task.wait(0.1)
-			end
+				get("LocationAPI/SetLocation"):FireServer("TheCrypt")
 
-			for _, coffinData in ipairs(ginormousCandyCoffins) do
-				openCoffin(coffinData)
-			end
+				local ClientData = require(ReplicatedStorage.Fsys).load("ClientData")
 
-			for _, coffinData in ipairs(otherRewardCoffins) do
-				openCoffin(coffinData)
-			end
+				local CryptConstants = require(
+					ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
+				)
 
-			game:GetService("ReplicatedStorage"):WaitForChild("adoptme_new_net"):WaitForChild("Halloween2026/ClaimTombSpider"):InvokeServer()
+				local UnlockPadlock = ReplicatedStorage.adoptme_new_net:WaitForChild(
+					"Halloween2026/UnlockPadlock"
+				)
+
+				local CryptData = ClientData.get(CryptConstants.STORE_KEY)
+
+				if not CryptData or not CryptData.floors then
+					warn("Impossible de récupérer les données de The Crypt.")
+					return
+				end
+
+				local ginormousCandyCoffins = {}
+				local otherRewardCoffins = {}
+
+				for floorIndex, floorData in pairs(CryptData.floors) do
+					for coffinIndex, rewardId in pairs(floorData.coffins) do
+
+						local rewardData = floorData.rewards
+							and floorData.rewards[rewardId]
+
+						local rewardIdText = tostring(rewardId):lower()
+
+						local rewardKindText = rewardData
+							and tostring(rewardData.kind):lower()
+							or ""
+
+						local isLadder = rewardId == "ladder"
+
+						local isCandy =
+							rewardIdText:find("candy", 1, true)
+							or rewardKindText:find("candy", 1, true)
+
+						local isGinormousCandy =
+							rewardIdText:find("ginormous", 1, true)
+							or rewardKindText:find("ginormous", 1, true)
+
+						if isGinormousCandy then
+							table.insert(ginormousCandyCoffins, {
+								floorIndex = floorIndex,
+								coffinIndex = coffinIndex,
+								rewardId = rewardId
+							})
+						elseif isLadder or isCandy then
+							table.insert(otherRewardCoffins, {
+								floorIndex = floorIndex,
+								coffinIndex = coffinIndex,
+								rewardId = rewardId
+							})
+						end
+					end
+				end
+
+				local function openCoffin(coffinData)
+					print(
+						"Ouverture : étage",
+						coffinData.floorIndex,
+						"tombe",
+						coffinData.coffinIndex,
+						coffinData.rewardId
+					)
+
+					local success, result = pcall(function()
+						return UnlockPadlock:InvokeServer({
+							floor_index = coffinData.floorIndex,
+							padlock_index = coffinData.coffinIndex
+						})
+					end)
+
+					if not success then
+						warn("Erreur :", result)
+					end
+
+					task.wait(0.1)
+				end
+
+				for _, coffinData in ipairs(ginormousCandyCoffins) do
+					openCoffin(coffinData)
+				end
+
+				for _, coffinData in ipairs(otherRewardCoffins) do
+					openCoffin(coffinData)
+				end
+
+				game:GetService("ReplicatedStorage"):WaitForChild("adoptme_new_net"):WaitForChild("Halloween2026/ClaimTombSpider"):InvokeServer()
+			end)
 		end
 	end
 end)
