@@ -102,6 +102,11 @@ spawn(function()
 	end
 end)
 
+get("SettingsAPI/SetSetting"):FireServer("player_names_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("friendship_bar_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("char_icons",false)
+get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
+
 LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 
 wait(2)
@@ -120,6 +125,11 @@ spawn(function()
 end)
 
 LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+
+get("SettingsAPI/SetSetting"):FireServer("player_names_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("friendship_bar_visibility",4)
+get("SettingsAPI/SetSetting"):FireServer("char_icons",false)
+get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
 
 local Fsys=require(game.ReplicatedStorage.Fsys)
 local load=Fsys.load
