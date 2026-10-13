@@ -152,8 +152,6 @@ end)
 
 spawn(function()
 	while wait() do
-		get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
-
 		if not GMC.is_participating then continue end
 		local visuals = workspace:FindFirstChild("GhostClustersVisuals")
 		local hasFreeGhosts = false
