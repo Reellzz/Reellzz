@@ -210,20 +210,6 @@ spawn(function()
 	end)
 end)
 
-spawn(function()
-	while wait(5) do
-		if workspace.Interiors:FindFirstChild("HauntedManor") then
-			if workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual") then
-				--workspace.Interiors:FindFirstChild("HauntedManor"):FindFirstChild("Visual"):Destroy()
-				workspace.Interiors.HauntedManor.Pedestals:Destroy()
-				workspace.Interiors.HauntedManor.Mannequins:Destroy()
-				workspace.Interiors.HauntedManor.PedestalItems:Destroy()
-				workspace.Interiors.HauntedManor.ShopItems:Destroy()
-			end
-		end
-	end
-end)
-
 task.spawn(function()
 	local R = game:GetService("ReplicatedStorage")
 	local C = require(R.Fsys).load("ClientData")
