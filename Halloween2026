@@ -8,6 +8,17 @@ local get = Fsys("RouterClient").get
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local GMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersMinigameClient)
+local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.HauntletMinigameClient)
+
+-- MINIMAGE SEARCH VAREIABLE
+
+local data = Fsys("ClientData")
+local time = Fsys("LiveOpsTime")
+local games = Fsys("MinigameClientManager")
+local notified = {}
+
+-- SET LOCATION VARIABLE
 
 function SetLocation(A, B, C)
 	local O = getthreadidentity()
@@ -26,6 +37,8 @@ for i, v in pairs(getgc()) do
 		end
 	end
 end
+
+-- BUTTON CLICK VARIABLE
 
 function ButtonClick(Path)
 	firesignal(Path["MouseButton1Down"])
@@ -75,18 +88,19 @@ until not LocalPlayer.PlayerGui.NewsApp.Enabled
 
 wait(10)
 
-local teleportPart = workspace.StaticMap.TeleportLocations.ghost_clusters
-local platform = Instance.new("Part")
-platform.Name = "GhostClustersPlatform"
-platform.Size = Vector3.new(50, 1, 50)
-platform.Position = teleportPart.Position + Vector3.new(0, -5, 0)
-platform.Anchored = true
-platform.CanCollide = true
-platform.CanTouch = true
-platform.CanQuery = true
-platform.Transparency = 0.5
-platform.Material = Enum.Material.SmoothPlastic
-platform.Parent = workspace
+-- CREATE PLATEFORM
+
+for _, name in ipairs({"ghost_clusters", "hauntlet"}) do
+	local tp = workspace.StaticMap.TeleportLocations[name]
+	local platform = Instance.new("Part", workspace)
+
+	platform.Name = "GhostClustersPlatform"
+	platform.Size = Vector3.new(50, 1, 50)
+	platform.Position = tp.Position - Vector3.new(0, 5, 0)
+	platform.Anchored = true
+	platform.Transparency = 0.5
+	platform.Material = Enum.Material.SmoothPlastic
+end
 
 get("TeamAPI/Spawn"):InvokeServer()
 get("ToolAPI/UnequipAll"):FireServer()
@@ -96,59 +110,51 @@ until workspace.HouseInteriors.blueprint:FindFirstChild(LocalPlayer.Name)
 
 wait(2)
 
-spawn(function()
-	if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
-		SetLocation("HauntedManor", "MainDoor", {})
-	end
-end)
-
-get("SettingsAPI/SetSetting"):FireServer("player_names_visibility",4)
-get("SettingsAPI/SetSetting"):FireServer("friendship_bar_visibility",4)
-get("SettingsAPI/SetSetting"):FireServer("char_icons",false)
-get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
-
-LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
-
-wait(2)
-
-LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+-- MINIMAGE SEARCH
 
 spawn(function()
-	if workspace.Interiors:FindFirstChild("HauntedManor") then
-		LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Interiors:WaitForChild("HauntedManor"):WaitForChild("GhostClustersMinigameJoinZone"):WaitForChild("Ring").CFrame
-	else
-		if not workspace.Interiors:FindFirstChild("MainMap!Fall") then
-			SetLocation("HauntedManor", "MainDoor", {})
+	while task.wait(0.5) do
+		for _, minigame in pairs(games.get_all()) do
+			local id = minigame.minigame_id:lower()
+
+			if id:find("ghost") or id:find("hauntlet") then
+				local info = data.get(minigame.cycle_timestamp_key)
+
+				if info and info.timestamp and notified[id] ~= info.timestamp then
+					local remaining = info.timestamp - time.now()
+
+					if remaining > 0 and remaining < 60 then
+						local name = id:find("ghost") and "ghost" or "hauntlet"
+						local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+						if root then
+							if name == "ghost" then
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+								SetLocation("HauntedManor", "MainDoor", {})
+								wait(2)
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
+							elseif name == "hauntlet" then
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.hauntlet.CFrame
+								SetLocation("HauntedHotel", "MainDoor", {})
+								wait(2)
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.hauntlet.CFrame
+							end
+
+							notified[id] = info.timestamp
+							print("Téléporté à", name)
+						end
+					end
+				end
+			end
 		end
-		LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
 	end
 end)
-
-LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.ghost_clusters.CFrame
-
-get("SettingsAPI/SetSetting"):FireServer("player_names_visibility",4)
-get("SettingsAPI/SetSetting"):FireServer("friendship_bar_visibility",4)
-get("SettingsAPI/SetSetting"):FireServer("char_icons",false)
-get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
-
-local Fsys=require(game.ReplicatedStorage.Fsys)
-local load=Fsys.load
-
-local m=load("MinigameClientManager").get(load("GhostClustersConstants").MINIGAME_ID)
-local a=require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
-
-local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
-
-local GhostClustersPropRenderer = require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.GhostClusters.GhostClustersPropRenderer)
-
-local Remote = ReplicatedStorage:WaitForChild("API"):WaitForChild("MinigameAPI/MessageServer")
 
 spawn(function()
 	while wait() do
 		get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
 
-		if not a.is_participating then continue end
+		if not GMC.is_participating then continue end
 		local visuals = workspace:FindFirstChild("GhostClustersVisuals")
 		local hasFreeGhosts = false
 
@@ -163,8 +169,8 @@ spawn(function()
 					hasFreeGhosts = true
 					local target = v:FindFirstChild("RootPart", true)
 					if target and target:IsA("BasePart") then
-						root.CFrame = target.CFrame
-						Remote:FireServer(m.instanced_minigame.minigame_id,"start_contribute",{["ghost_id"] = ghost_id,["use_token"] = "SnusVille"})
+						LocalPlayer.Character.HumanoidRootPart.CFrame = target.CFrame
+						get("MinigameAPI/MessageServer"):FireServer(GMC.instanced_minigame.minigame_id,"start_contribute",{["ghost_id"] = ghost_id,["use_token"] = "SnusVille"})
 					end
 				end
 
@@ -172,19 +178,27 @@ spawn(function()
 		end
 
 		if not hasFreeGhosts then
-			for _, target in GhostClustersPropRenderer.get_targets(true) do
+			for _, target in require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.GhostClusters.GhostClustersPropRenderer).get_targets(true) do
 				local unique = target.unique
 				local model = target.model
 				if unique and model then
 					local teleportPart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
 					if teleportPart then
-						root.CFrame = teleportPart.CFrame
-						Remote:FireServer(m.instanced_minigame.minigame_id,"start_prop_contribute",{["unique"] = unique,["use_token"] = "SnusVille"})
+						LocalPlayer.Character.HumanoidRootPart.CFrame = teleportPart.CFrame
+						get("MinigameAPI/MessageServer"):FireServer(GMC.instanced_minigame.minigame_id,"start_prop_contribute",{["unique"] = unique,["use_token"] = "SnusVille"})
 					end
 				end
 			end
 		end
 
+	end
+end)
+
+spawn(function()
+	while wait(1) do
+		if HMC.is_participating then
+			get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "try_pick_door", 2)
+		end
 	end
 end)
 
@@ -210,116 +224,48 @@ spawn(function()
 	end
 end)
 
-spawn(function()
-	while wait(5) do
-		if not a.is_participating then
-			spawn(function()
-				local CryptConstants = require(
-					ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
-				)
+task.spawn(function()
+	local R = game:GetService("ReplicatedStorage")
+	local C = require(R.Fsys).load("ClientData")
+	local K = require(R.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants)
+	local U = R.adoptme_new_net:WaitForChild("Halloween2026/UnlockPadlock")
 
-				local EquipTool = ReplicatedStorage.API:WaitForChild("ToolAPI/Equip")
-
-				for _, toy in pairs(ClientData.get("inventory").toys) do
-					if toy.kind == CryptConstants.KEY_ITEM_KIND then
-						EquipTool:InvokeServer(toy.unique)
-						break
-					end
+	while task.wait(5) do
+		if not GMC.is_participating and not HMC.is_participating then
+			for _, v in pairs(C.get("inventory").toys) do
+				if v.kind == K.KEY_ITEM_KIND then
+					R.API["ToolAPI/Equip"]:InvokeServer(v.unique)
+					break
 				end
+			end
 
-				get("LocationAPI/SetLocation"):FireServer("TheCrypt")
+			get("LocationAPI/SetLocation"):FireServer("TheCrypt")
 
-				local ClientData = require(ReplicatedStorage.Fsys).load("ClientData")
+			local d = C.get(K.STORE_KEY)
+			if d and d.floors then
+				local a, b = {}, {}
 
-				local CryptConstants = require(
-					ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Game.TheCrypt.CryptConstants
-				)
-
-				local UnlockPadlock = ReplicatedStorage.adoptme_new_net:WaitForChild(
-					"Halloween2026/UnlockPadlock"
-				)
-
-				local CryptData = ClientData.get(CryptConstants.STORE_KEY)
-
-				if not CryptData or not CryptData.floors then
-					warn("Impossible de récupérer les données de The Crypt.")
-					return
-				end
-
-				local ginormousCandyCoffins = {}
-				local otherRewardCoffins = {}
-
-				for floorIndex, floorData in pairs(CryptData.floors) do
-					for coffinIndex, rewardId in pairs(floorData.coffins) do
-
-						local rewardData = floorData.rewards
-							and floorData.rewards[rewardId]
-
-						local rewardIdText = tostring(rewardId):lower()
-
-						local rewardKindText = rewardData
-							and tostring(rewardData.kind):lower()
-							or ""
-
-						local isLadder = rewardId == "ladder"
-
-						local isCandy =
-							rewardIdText:find("candy", 1, true)
-							or rewardKindText:find("candy", 1, true)
-
-						local isGinormousCandy =
-							rewardIdText:find("ginormous", 1, true)
-							or rewardKindText:find("ginormous", 1, true)
-
-						if isGinormousCandy then
-							table.insert(ginormousCandyCoffins, {
-								floorIndex = floorIndex,
-								coffinIndex = coffinIndex,
-								rewardId = rewardId
-							})
-						elseif isLadder or isCandy then
-							table.insert(otherRewardCoffins, {
-								floorIndex = floorIndex,
-								coffinIndex = coffinIndex,
-								rewardId = rewardId
-							})
+				for f, floor in pairs(d.floors) do
+					for i, id in pairs(floor.coffins) do
+						local s = (tostring(id) .. tostring(floor.rewards and floor.rewards[id] and floor.rewards[id].kind)):lower()
+						local v = {floor_index = f, padlock_index = i}
+						if s:find("ginormous") then
+							a[#a+1] = v
+						elseif id == "ladder" or s:find("candy") then
+							b[#b+1] = v
 						end
 					end
 				end
 
-				local function openCoffin(coffinData)
-					print(
-						"Ouverture : étage",
-						coffinData.floorIndex,
-						"tombe",
-						coffinData.coffinIndex,
-						coffinData.rewardId
-					)
-
-					local success, result = pcall(function()
-						return UnlockPadlock:InvokeServer({
-							floor_index = coffinData.floorIndex,
-							padlock_index = coffinData.coffinIndex
-						})
-					end)
-
-					if not success then
-						warn("Erreur :", result)
+				for _, list in ipairs({a, b}) do
+					for _, v in ipairs(list) do
+						pcall(function() U:InvokeServer(v) end)
+						task.wait(.1)
 					end
-
-					task.wait(0.1)
 				end
 
-				for _, coffinData in ipairs(ginormousCandyCoffins) do
-					openCoffin(coffinData)
-				end
-
-				for _, coffinData in ipairs(otherRewardCoffins) do
-					openCoffin(coffinData)
-				end
-
-				game:GetService("ReplicatedStorage"):WaitForChild("adoptme_new_net"):WaitForChild("Halloween2026/ClaimTombSpider"):InvokeServer()
-			end)
+				R.adoptme_new_net:WaitForChild("Halloween2026/ClaimTombSpider"):InvokeServer()
+			end
 		end
 	end
 end)
