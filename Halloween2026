@@ -150,9 +150,17 @@ spawn(function()
 	end
 end)
 
+local m = Fsys("MinigameClientManager").get(Fsys("GhostClustersConstants").MINIGAME_ID)
+local a = require(ReplicatedStorage.SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersScalerClient)
+
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local root = character:WaitForChild("HumanoidRootPart")
+
 spawn(function()
 	while wait() do
-		if not GMC.is_participating then continue end
+		get("InteractablesAPI/DisableInteractionWithMe"):FireServer(true)
+
+		if not a.is_participating then continue end
 		local visuals = workspace:FindFirstChild("GhostClustersVisuals")
 		local hasFreeGhosts = false
 
@@ -167,8 +175,8 @@ spawn(function()
 					hasFreeGhosts = true
 					local target = v:FindFirstChild("RootPart", true)
 					if target and target:IsA("BasePart") then
-						LocalPlayer.Character.HumanoidRootPart.CFrame = target.CFrame
-						get("MinigameAPI/MessageServer"):FireServer(GMC.instanced_minigame.minigame_id,"start_contribute",{["ghost_id"] = ghost_id,["use_token"] = "SnusVille"})
+						root.CFrame = target.CFrame
+						get("MinigameAPI/MessageServer"):FireServer(m.instanced_minigame.minigame_id,"start_contribute",{["ghost_id"] = ghost_id,["use_token"] = "SnusVille"})
 					end
 				end
 
@@ -182,8 +190,8 @@ spawn(function()
 				if unique and model then
 					local teleportPart = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
 					if teleportPart then
-						LocalPlayer.Character.HumanoidRootPart.CFrame = teleportPart.CFrame
-						get("MinigameAPI/MessageServer"):FireServer(GMC.instanced_minigame.minigame_id,"start_prop_contribute",{["unique"] = unique,["use_token"] = "SnusVille"})
+						root.CFrame = teleportPart.CFrame
+						get("MinigameAPI/MessageServer"):FireServer(m.instanced_minigame.minigame_id,"start_prop_contribute",{["unique"] = unique,["use_token"] = "SnusVille"})
 					end
 				end
 			end
