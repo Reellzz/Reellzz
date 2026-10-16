@@ -10,6 +10,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local GMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.GhostClustersMinigameClient)
 local HMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.HauntletMinigameClient)
+local SMC = require(game:GetService("ReplicatedStorage").SharedModules.ContentPacks.Halloween2026.Minigames.SpotlightMinigameClient)
 
 -- MINIMAGE SEARCH VAREIABLE
 
@@ -90,7 +91,7 @@ wait(10)
 
 -- CREATE PLATEFORM
 
-for _, name in ipairs({"ghost_clusters", "hauntlet"}) do
+for _, name in ipairs({"ghost_clusters", "hauntlet", "spotlight"}) do
 	local tp = workspace.StaticMap.TeleportLocations[name]
 	local platform = Instance.new("Part", workspace)
 
@@ -124,7 +125,7 @@ spawn(function()
 					local remaining = info.timestamp - time.now()
 
 					if remaining > 0 and remaining < 60 then
-						local name = id:find("ghost") and "ghost" or "hauntlet"
+						local name = id:find("ghost") and "ghost" or "hauntlet" or "spotlight"
 						local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 
 						if root then
@@ -138,6 +139,11 @@ spawn(function()
 								SetLocation("HauntedHotel", "MainDoor", {})
 								wait(2)
 								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.hauntlet.CFrame
+							elseif name == "spotlight" then
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.spotlight.CFrame
+								SetLocation("Circus", "MainDoor", {})
+								wait(2)
+								LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.StaticMap.TeleportLocations.spotlight.CFrame
 							end
 
 							notified[id] = info.timestamp
@@ -204,6 +210,14 @@ spawn(function()
 	while wait(1) do
 		if HMC.is_participating then
 			get("MinigameAPI/MessageServer"):FireServer(HMC.instanced_minigame.minigame_id, "try_pick_door", 2)
+		end
+	end
+end)
+
+spawn(function()
+	while wait(1) do
+		if SMC.is_participating then
+			print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
 		end
 	end
 end)
